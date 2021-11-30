@@ -1,0 +1,13 @@
+{
+    "name": "Aquatic",
+    "alias": "aquatic",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Aquatic\\Providers\\AquaticServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

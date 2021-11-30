@@ -1,0 +1,115 @@
+.custom-tabs-inner {
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0 0 30px 0 rgb(0 0 0 / 10%);
+
+    input[type="checkbox"] {
+        height: 20px !important;
+        outline: none !important;
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+}
+
+.custom-tabs-inner-form {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 100%;
+    border: 2px solid #c0c0c0;
+    border-radius: 5px;
+    input {
+        border: none !important;
+        outline: none !important;
+        height: 46px;
+    }
+
+    .form-details {
+        position: relative;
+        padding-left: 50px;
+
+        i {
+            position: absolute;
+            color: #000;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &.where-section {
+            -ms-flex: 0 0 27.5%;
+            flex: 0 0 27.5%;
+            max-width: 27.5%;
+        }
+
+        &.calendar-section {
+            -ms-flex: 0 0 27.5%;
+            flex: 0 0 27.5%;
+            max-width: 27.5%;
+            border-left: 2px solid #c0c0c0;
+            border-right: 2px solid #c0c0c0;
+        }
+
+        &.adult-section {
+            -ms-flex: 0 0 35%;
+            flex: 0 0 35%;
+            max-width: 35%;
+
+            .dropdown-btn {
+                padding: 8px 0px;
+                line-height: 30px;
+                cursor: pointer;
+            }
+
+            .boat-type-sec-btn {
+                padding: 8px 0px;
+                line-height: 30px;
+                cursor: pointer;
+
+                .fa-angle-down {
+                    right: 10px;
+                    left: auto;
+                }
+            }
+
+            .dropdown-btn {
+                .fa-angle-up {
+                    right: 10px;
+                    left: auto;
+                    top: 18px;
+                }
+
+                .fa-angle-down {
+                    right: 10px;
+                    left: auto;
+                    top: 27px;
+                }
+            }
+        }
+    }
+
+    .submit-btnn {
+        -ms-flex: 0 0 10%;
+        flex: 0 0 10%;
+        max-width: 10%;
+        background-color: #c0c0c0;
+        font-weight: 600;
+        font-size: 16px;
+        color: #3d3d3d;
+    }
+
+    .form-control {
+
+        &:disabled,
+        &[readonly] {
+            background-color: transparent !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    }
+}

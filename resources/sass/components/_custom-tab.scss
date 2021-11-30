@@ -1,0 +1,51 @@
+.custom-tabs-section {
+    /*
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    top: 62px;
+    */
+}
+
+.custom-tabs.nav-tabs {
+    border-bottom: none;
+
+    li {
+        margin-right: 15px;
+
+        a {
+            display: block;
+            font-weight: 600;
+            color: #c1bdbe;
+            position: relative;
+            min-width: 100px;
+            text-align: center;
+            padding-bottom: 10px;
+
+            &:after {
+                position: absolute;
+                content: '';
+                background-color: #000;
+                width: 100%;
+                height: 3px;
+                left: 0;
+                bottom: 0;
+                display: none;
+            }
+
+            &.active:after,
+            &:hover:after {
+                display: block;
+            }
+
+            i {
+                margin-right: 5px;
+            }
+
+            &.active,
+            &:hover {
+                color: #000 !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+    - source: /
+      destination: workdir
+hooks:
+
+    BeforeInstall:
+        - location: scripts/BeforeInstall.sh
+          runas: ubuntu
+          
+    AfterInstall:
+        - location: scripts/AfterInstall.sh
+          runas: ubuntu

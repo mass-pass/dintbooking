@@ -1,0 +1,22 @@
+#!/bin/bash
+# Set permissions to storage and bootstrap cache
+mkdir -p workdir
+sudo chown ubuntu:ubuntu workdir
+cd workdir
+# #
+# # Run composer
+wget 'https://getcomposer.org/download/latest-stable/composer.phar'
+chmod +x composer.phar
+./composer.phar install # --no-ansi --no-dev --no-suggest --no-interaction --no-progress --prefer-dist --no-scripts
+
+
+if [[ -d workdir/storage ]]; then sudo chmod -R 0777 workdir/storage; fi
+
+if [[ -d workdir/bootstrap/cache ]]; then sudo chmod -R 0777 workdir/bootstrap/cache; fi
+
+if [[ -d workdir/vendor/ ]]; then sudo chmod -R 0777 workdir/vendor/; fi
+
+sudo chown -R ubuntu:www-data workdir
+# #
+# # Run artisan commands
+if [[ -d workdir/artisan ]]; then php artisan migrate; fi

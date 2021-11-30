@@ -1,0 +1,11 @@
+// resources/sass/vendor.scss
+// 3rd party packages that was installed by npm
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+@import '../sass/vendors/bootstrap/bootstrap.min.scss';
+@import '../sass/vendors/fontawesome/css/fontawesome.min.scss';
+@import '../sass/vendors/fontawesome/css/font-awesome-5-pro.scss';
+
+
+@import '/node_modules/dropzone/src/dropzone.scss';
+

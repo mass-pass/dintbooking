@@ -1,0 +1,80 @@
+//Media Query
+@mixin wide_screen(){
+  @media screen and (min-width: 1400px){
+    @content;
+  }
+}
+
+/* Portrait and Landscape */
+@mixin small_notebook() {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+/* Portrait */
+@mixin ipad_pro_potrait() {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    @content;  
+  }
+}
+
+/* Landscape */
+@mixin ipad_pro_landscape() {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    @content;  
+  }
+}
+
+@mixin tablet(){
+  @media screen and (max-width: 991px){
+    @content;
+  }
+}
+
+@mixin mobile(){
+  @media screen and (max-width: 767px){
+    @content;
+  }
+}
+
+@mixin medium_mobile(){
+  @media screen and (max-width: 575px){
+    @content;
+  }
+}
+
+@mixin small_mobile(){
+  @media screen and (max-width: 360px){
+    @content;
+  }
+}
+
+@mixin breakpoint($value) {
+  @each $screen, $width in $media-query {
+      @if ($value == $screen) {
+          @media #{$width} {
+              @content;
+          } 
+      }
+  }
+}
+
+@mixin text-row($Line-height, $Rows) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $Rows; /* number of lines to show */
+  line-height: $Line-height;        /* fallback */
+  max-height: $Line-height*$Rows;
+} 
+
+// ANIMATED 
+@mixin animate($sec: false) {
+@if $sec {
+  transition: all $sec ease;
+} @else { 
+  transition: all .3s ease;
+}
+}

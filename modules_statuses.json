@@ -1,0 +1,12 @@
+{
+    "Users": true,
+    "Hotels": true,
+    "Automotive": true,
+    "Aquatic": true,
+    "Auth": true,
+    "Services": true,
+    "Corporatehousing": true,
+    "Admin": true,
+    "Boata": true,
+    "Boats": true
+}

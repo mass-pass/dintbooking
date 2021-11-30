@@ -1,0 +1,13 @@
+{
+    "name": "Boats",
+    "alias": "boats",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Boats\\Providers\\BoatsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

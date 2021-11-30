@@ -1,0 +1,13 @@
+{
+    "name": "Automotive",
+    "alias": "automotive",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Automotive\\Providers\\AutomotiveServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

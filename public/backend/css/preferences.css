@@ -1,0 +1,32 @@
+.remove_logo_preview {
+    position: relative;
+    vertical-align:top;
+    background: black;
+    color: white;
+    border-radius: 50px;
+    font-size: 0.9em;
+    padding: 0 0.3em 0;
+    text-align: center;
+    cursor: pointer;
+  }
+  .remove_logo_preview:before {
+    content: "×";
+    vertical-align:top;
+      
+  }
+  .remove_favicon_preview {
+    position: relative;
+    vertical-align:top;
+    background: black;
+    color: white;
+    border-radius: 50px;
+    font-size: 0.9em;
+    padding: 0 0.3em 0;
+    text-align: center;
+    cursor: pointer;
+  }
+  .remove_favicon_preview:before {
+    content: "×";
+    vertical-align:top;
+      
+  }

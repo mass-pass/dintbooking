@@ -1,0 +1,131 @@
+image: atlassian/default-image:2
+
+pipelines:
+  branches:
+    bugfix/develop:
+      - step:
+          name: Build
+          script:
+            - sed "s:workdir:${DEV_WORKDIR}:g" scripts/AfterInstall.sh.tmpl > scripts/AfterInstall.sh
+            - sed "s:workdir:${DEV_WORKDIR}:g" appspec.yml.tmpl > appspec.yml
+           # - sed "s/appurl/${DEV_APP_URL}/; s/database/${DEV_DB}/; s/username/${DEV_DB_USER}/; s/password/${DEV_DB_PASSWORD}/g" .env.tmpl > .env
+            - zip -r dint-dev.zip .
+          artifacts:
+            - dint-dev.zip
+
+      - step:
+          name: Upload to S3
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'upload'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                ZIP_FILE: 'dint-dev.zip'
+                S3_BUCKET: 'dint-dev'
+                VERSION_LABEL: 'dint-dev-${BITBUCKET_BUILD_NUMBER}'
+
+      - step:
+          name: Deploy with CodeDeploy
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'deploy'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                DEPLOYMENT_GROUP: 'dint-dev-ec2'
+                IGNORE_APPLICATION_STOP_FAILURES: "true"
+                FILE_EXISTS_BEHAVIOR: "OVERWRITE"
+                WAIT: 'true'
+                S3_BUCKET: 'dint-dev'
+                VERSION_LABEL: 'dint-dev-${BITBUCKET_BUILD_NUMBER}'
+
+    release/stage:
+      - step:
+          name: Build
+          script:
+            - sed "s:workdir:${STAGE_WORKDIR}:g" scripts/AfterInstall.sh.tmpl > scripts/AfterInstall.sh
+            - sed "s:workdir:${STAGE_WORKDIR}:g" appspec.yml.tmpl > appspec.yml
+            - sed "s/appurl/${STAGE_APP_URL}/; s/database/${STAGE_DB}/; s/username/${STAGE_DB_USER}/; s/password/${STAGE_DB_PASSWORD}/g" .env.tmpl > .env
+            - zip -r dint-stage.zip .
+          artifacts:
+            - dint-stage.zip
+
+      - step:
+          name: Upload to S3
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${STAGE_AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${STAGE_AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'upload'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                ZIP_FILE: 'dint-stage.zip'
+                S3_BUCKET: 'dint-stage'
+                VERSION_LABEL: 'dint-stage-${BITBUCKET_BUILD_NUMBER}'
+
+      - step:
+          name: Deploy with CodeDeploy
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${STAGE_AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${STAGE_AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'deploy'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                DEPLOYMENT_GROUP: 'dint-stage-ec2'
+                IGNORE_APPLICATION_STOP_FAILURES: "true"
+                FILE_EXISTS_BEHAVIOR: "OVERWRITE"
+                WAIT: 'true'
+                S3_BUCKET: 'dint-stage'
+                VERSION_LABEL: 'dint-stage-${BITBUCKET_BUILD_NUMBER}'
+
+    master:
+      - step:
+          name: Build
+          script:
+            - sed "s:workdir:${PROD_WORKDIR}:g" scripts/AfterInstall.sh.tmpl > scripts/AfterInstall.sh
+            - sed "s:workdir:${PROD_WORKDIR}:g" appspec.yml.tmpl > appspec.yml
+            - sed "s/appurl/${PROD_APP_URL}/; s/database/${PROD_DB}/; s/username/${PROD_DB_USER}/; s/password/${PROD_DB_PASSWORD}/g" .env.tmpl > .env
+            - zip -r dint-prod.zip .
+          artifacts:
+            - dint-prod.zip
+
+      - step:
+          name: Upload to S3
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${PROD_AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${PROD_AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'upload'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                ZIP_FILE: 'dint-prod.zip'
+                S3_BUCKET: 'dint-prod'
+                VERSION_LABEL: 'dint-prod-${BITBUCKET_BUILD_NUMBER}'
+
+      - step:
+          name: Deploy with CodeDeploy
+          script:
+            - pipe: atlassian/aws-code-deploy:0.2.10
+              variables:
+                AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+                AWS_ACCESS_KEY_ID: ${PROD_AWS_ACCESS_KEY_ID}
+                AWS_SECRET_ACCESS_KEY: ${PROD_AWS_SECRET_ACCESS_KEY}
+                COMMAND: 'deploy'
+                APPLICATION_NAME: ${APPLICATION_NAME}
+                DEPLOYMENT_GROUP: 'dint-prod-ec2'
+                IGNORE_APPLICATION_STOP_FAILURES: "true"
+                FILE_EXISTS_BEHAVIOR: "OVERWRITE"
+                WAIT: 'true'
+                S3_BUCKET: 'dint-prod'
+                VERSION_LABEL: 'dint-prod-${BITBUCKET_BUILD_NUMBER}'
+
+    

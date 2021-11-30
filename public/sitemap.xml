@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://dint.com/</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://dint.com/login</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/signup</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Miami&amp;checkin=&amp;checkout=&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Chicago&amp;checkin=&amp;checkout=&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Playa%20Vista&amp;checkin=&amp;checkout=&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/properties/2</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/properties/4</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/properties/3</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/properties/1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/how-dint-works</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/terms</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/privacy</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Miami&amp;checkin=05-06-2021&amp;checkout=05-06-2021&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Chicago&amp;checkin=05-06-2021&amp;checkout=05-06-2021&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Playa%20Vista&amp;checkin=05-06-2021&amp;checkout=05-06-2021&amp;guest=1</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://dint.com/forgot_password</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://dint.com/login?</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Miami</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Los%20Angeles</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://dint.com/search?location=Chicago</loc>
+  <lastmod>2021-06-05T11:12:01+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>

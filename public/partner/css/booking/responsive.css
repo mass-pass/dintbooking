@@ -1,0 +1,29 @@
+/* Dint dashboard responsive */
+
+
+/* Media queries starts */
+
+@media (min-width:1280px){
+    .container{
+        max-width: 1200px;
+    }
+}
+
+@media (min-width:1500px){
+    .container{
+        max-width: 1400px;
+    }
+}
+@media screen  and (max-width:667px){
+    .col-15{
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width:100%;
+    }
+    
+}
+@media screen and (max-width:480px) {
+    .content-header .dash-info{
+        margin-bottom: 15px;
+    }
+}

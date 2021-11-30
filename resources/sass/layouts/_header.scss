@@ -1,0 +1,214 @@
+.header_area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: background .4s, all .3s linear;
+    background: #fff;
+    z-index: 99;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .11);
+
+    .navbar {
+        .search {
+            font-size: 1.2rem;
+            line-height: 6rem;
+            display: inline-block;
+            margin-left: 8rem;
+        }
+    }
+
+    &.navbar_fixed {
+        .main_menu {
+            position: fixed;
+            width: 100%;
+            top: -7rem;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            transform: translateY(7rem);
+            transition: transform 500ms ease, background 500ms ease;
+            -webkit-transition: transform 500ms ease, background 500ms ease;
+            box-shadow: 0 0.3rem 1.6rem 0 rgba(0, 0, 0, 0.1);
+
+            .navbar {
+                background: #fff;
+            }
+        }
+    }
+
+    &.white_menu {
+        .navbar {
+            .nav {
+                .nav-item {
+                    .nav-link {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        &.navbar_fixed {
+            .main_menu {
+                .navbar {
+                    .navbar-brand {
+                        img {
+                            display: inline-block;
+                        }
+                    }
+
+                    .nav {
+                        .nav-item {
+                            .nav-link {
+                                line-height: 7rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .navbar-right {
+        min-width: 20rem;
+        text-align: right;
+    }
+
+    .navbar-brand {
+        margin-right: 3rem;
+        padding: 0;
+    }
+
+    .navbar-social {
+        min-width: 9.5rem;
+        float: right;
+
+        li {
+            margin-right: 1.2rem;
+
+            i,
+            span {
+                font-size: 1.3rem;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            a:hover i,
+            span {
+                color: #303030;
+            }
+        }
+    }
+
+    .menu_nav {
+        width: 100%;
+    }
+
+    .navbar {
+        background: 0 0;
+        border: 0;
+        border-radius: 0;
+        width: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .nav-right {
+            min-width: 20rem;
+        }
+
+        .nav .nav-item {
+            margin-right: 3.5rem;
+
+            .nav-link {
+                color: #2b2b2b;
+                text-transform: uppercase;
+                font-weight: 700;
+                padding: 2.2rem 0;
+                display: inline-block;
+                font-size: 1.4rem;
+            }
+
+            &.active .nav-link,
+            &:hover .nav-link {
+                color: #303030;
+                opacity: 1;
+            }
+
+            &.submenu {
+                position: relative;
+
+                ul {
+                    border: 0;
+                    padding: 0;
+                    border-radius: 0;
+                    box-shadow: none;
+                    margin: 0;
+                    background: #fff;
+
+                    &:before {
+                        content: "";
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 1rem 1rem 0;
+                        border-color: #eee transparent transparent;
+                        position: absolute;
+                        right: 2.4rem;
+                        top: 4.5rem;
+                        z-index: 3;
+                        opacity: 0;
+                        transition: all 400ms linear;
+                    }
+
+                    .nav-item {
+                        display: block;
+                        float: none;
+                        margin-right: 0;
+                        border-bottom: .1rem solid #ededed;
+                        margin-left: 0;
+                        transition: all 0.4s linear;
+
+                        .nav-link {
+                            line-height: 4.5rem;
+                            color: #6059f6 !important;
+                            padding: 0 3rem;
+                            transition: all 150ms linear;
+                            display: block;
+                            margin-right: 0;
+                        }
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                }
+
+                &:hover ul .nav-item {
+                    margin-top: 0;
+                }
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.left_point ul li i:hover,
+.right_point h2 strong,
+figure.effect-ming p a:hover {
+    color: #303030;
+}
+
+.top_menu {
+    .float-left {
+        a {
+            &:last-child {
+                margin-right: 0;
+
+            }
+        }
+    }
+}

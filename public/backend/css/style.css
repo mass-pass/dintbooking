@@ -1,0 +1,475 @@
+.input-addon {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.input-prefix {
+    font-size: 18px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+.input-prefix, .input-suffix {
+    display: table-cell;
+    background-color: #edefed;
+    width: auto;
+    vertical-align: middle;
+    text-align: center;
+    padding: 6px 6px;
+}
+.money-input{
+    box-shadow: none;
+    color: #4b565b;
+    height: auto;
+    padding: 8px 12px;
+    width: 100%;
+    display: block;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    line-height: 1.42857;
+}
+.display-off{
+  display: none;
+}
+
+.room-image-container200 {
+    width: 100%;
+    height: 200px;
+    background-color: #f5f5f5;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+
+/* Calendar */
+
+.col-md-02 {
+    width: 14.30%;
+}
+.col-md-02 {
+    float: left;
+}
+.col-md-02 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: -1px;
+}
+
+.calender_box{ border:1px solid #d4d4d4; padding:2px 5px; height:90px; border-bottom:0;}
+.dTfont{ margin-top:48%; position:absolute;}
+.dt-not-available{
+  background-color: #dce0e0;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.dt-today .final_day{
+  font-weight: bold;
+}
+
+/*calender*/
+.calendar-month {
+    width: 100%;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none
+}
+
+.calendar-month .current-month-selection {
+    display: inline-block;
+    position: relative;
+    cursor: pointer
+}
+.calendar-month .current-month-selection h2 {
+    padding-top: 4px
+}
+.calendar-month .current-month-selection select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    -ms-filter: "alpha(opacity=0)";
+    filter: alpha(opacity=0)
+}
+.calendar-month .current-month-selection .current-month-arrow {
+    font-size: 24px;
+    position: relative;
+    top: -3px;
+    text-rendering: optimizeLegibility
+}
+.calendar-month .month-nav {
+    color: #565a5c;
+    border: 1px solid #ddd;
+    width: 46px;
+    height: 42px;
+    display: inline-block
+}
+.calendar-month .month-nav.disabled {
+    color: #d7d7d7;
+    border-color: #e6e6e6;
+    cursor: default
+}
+.calendar-month .month-nav.disabled:hover {
+    color: #d7d7d7
+}
+.calendar-month .month-nav .icon {
+    width: 46px;
+    height: 42px;
+    line-height: 42px
+}
+.calendar-month .month-nav:hover {
+    color: #9ca299;
+    text-decoration: none
+}
+.calendar-month .month-nav-next {
+    margin-right: 15px;
+    margin-left: -1px
+}
+.calendar-month .spinner-next-to-month-nav {
+    position: absolute;
+    top: 18px;
+    left: 100%;
+    width: 35px;
+    margin-left: 13px;
+    font-size: 0;
+    color: transparent
+}
+.calendar-month.calendar-placeholder {
+    min-height: 456px
+}
+.host-calendar-container {
+    position: relative; 
+}
+
+#calendar_dropdown{
+  width: 100%;
+}
+
+.calendar-icon-style {
+    margin-top: 15px;
+}
+
+.dt-available-with-events{
+  background-color: #EEAE9C;
+}
+
+/*calender end*/
+/*select 2 responsive*/
+.select2 {
+width:100%!important;
+}
+
+tr.strikeout td:before {
+    content: " ";
+    position: absolute;
+    display: inline-block;
+    padding: 5px 10px;
+    left:0;
+    margin-left:20px;
+    border-bottom: 1px solid black;
+    width:82%;
+
+    }
+    .select2Custom{
+        color: #000 !important;
+    }
+
+    label.error{
+        color:red !important;
+    }
+
+    /*For datatables export button and length style*/
+    #dataTableBuilder_length{
+        margin-top:5px; 
+        margin-left: 5px;
+        float: left;          
+    }
+    #dataTableBuilder_length select{
+        width: 45px;
+        height: 34px;
+        border: 1px solid #ccc;
+        float: left;
+    }
+    #dataTableBuilder_length label {
+        display:inline;
+        margin-left: 15px;
+    }
+    
+
+    @media only screen and (min-width: 420px) and (max-width: 570px){
+        #exportArea{
+        float: right;
+        }      
+    }
+
+    @media only screen and (min-width: 320px) and (max-width: 420px){
+        #exportArea{         
+            float: right;
+        }
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    padding: 8px 8px 8px 8px !important;
+    }
+
+    .fixedScrollBox {
+        position:fixed;
+        top:50%;
+        width:100%;
+        z-index:100;
+        left: 50%;
+        right: 50%;
+        bottom: 50%;
+    
+    }
+
+    @media only screen and (min-width: 320px) and (max-width: 420px){
+        .fixedScrollBox {
+            position:fixed;
+            top:50%;
+            width:100%;
+            z-index:100;
+            left: 20%;
+            right: 50%;
+            bottom: 50%;
+        
+        }
+    }
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.ml-0 {
+    margin-left: 0;
+}
+
+.text-13 {
+    font-size: 13px;
+}
+
+.text-20 {
+font-size: 20px;
+}
+
+.mb-0  {
+    margin-bottom: 0px;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.mt-m-2 {
+    margin-top: -2px;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.ml-40 {
+    margin-left:40px;
+}
+
+.font-weight-bold {
+    font-weight: 700;
+}
+
+.total-book {
+    color: #489c61 ;
+}
+
+.total-customer {
+    color: #489c61  ;
+}
+
+.total-amount {
+    color: #367FA9;
+}
+
+.total-payouts {
+    font-weight: bold; 
+    color: 008000 ;
+}
+
+.btn-refresh {
+    margin:0px 0px 0px -15px
+}
+
+.ul-checkbox {
+    display: inline-block;
+    list-style-type: none;
+    padding:0;
+    margin:0;
+}
+
+.li-checkbox {
+    display: inline-block;
+    min-width: 155px;
+}
+
+.file-img {
+    max-width:150px;
+    padding-top:0px;
+}
+
+.text-green {
+    color:green;
+}
+
+.btn-margin {
+    margin:0px 0px 0px 5px;
+}
+
+.w-80 {
+    width:80px;
+}
+
+.d-menu-min-w {
+    min-width:120px;
+}
+
+.z-index-medium {
+    z-index: 1060;
+}
+
+.z-index-high {
+    z-index: 1000000;
+}
+
+.w-100-p {
+    width: 100%;
+}
+
+.h-100-p {
+    height: 100%;
+}
+
+.d-none {
+    display: none;
+}
+
+.d-block {
+    display: block;
+}
+
+.h-300 {
+    height: 300px;
+}
+
+.h-0 {
+    height:0px;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.calendar-m-msg {
+    background-color: green;
+    color:white;
+    text-align: center;
+    font-size:15px;
+    display:none;
+}
+
+.import-cal {
+    color:#06ae9c;
+}
+
+.i-cal-m-msg {
+    background-color: green;
+    color:white;
+    text-align: center;
+    font-size:15px;display:none;
+}
+
+/* i-cal-color */
+.aquamarine {
+    background-color: Aquamarine;
+}
+.blue {
+    background-color: Blue;
+}
+
+.navy {
+    background-color: Navy;color: #FFFFFF;
+}
+
+.purple {
+    background-color: Purple;color: #FFFFFF;
+}
+
+.deepPink {
+    background-color: DeepPink;
+}
+
+.violet {
+    background-color: Violet;
+}
+
+
+.pink {
+    background-color: Pink;
+}
+
+.darkGreen {
+    background-color: Pink;
+}
+
+.green {
+    background-color: Green;color: #FFFFFF;
+}
+
+.yellowGreen {
+    background-color: YellowGreen;
+}
+
+.yellow {
+    background-color: Yellow;
+}
+
+.orange {
+    background-color: Orange;
+}
+
+.red {
+    background-color: Red;
+}
+
+.brown {
+    background-color: Brown;
+}
+
+.burlyWood {
+    background-color: BurlyWood;
+}
+
+.customer-modal {
+    margin-top:4px;
+    float: left;
+    width: 100%;
+}
+
+.sale-container {
+    min-width: 310px; 
+    height: 400px;
+    margin: 0 auto;
+}
+
+.yellow-color {
+    color: yellow;
+}
+
+.loginto {
+    color:#03ae74;
+}

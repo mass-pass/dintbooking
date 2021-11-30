@@ -1,0 +1,1 @@
+<input type="hidden" name="{{ $field['name'] }}" class="form-control {{ @$field['class'] }}" id="{{ $field['id'] ?? $field['name'] }}" value="{{ $_POST[$field['name']] ?? $field['value'] }}" placeholder="{{ $field['label'] }}">
