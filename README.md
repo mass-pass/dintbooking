@@ -39,3 +39,8 @@ Run this commands
 php artisan populate:slug
 php artisan db:seed --class=AddBoatAmenities
 php artisan db:seed --class=PropertyCategorySeeder
+php artisan db:seed --class=AdminUserSeeder 
+
+http://dint.stage/admin
+Email: max@dint.com
+Password: 123456
