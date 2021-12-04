@@ -1,7 +1,7 @@
 <div>
 <h3>Pictures</h3>
 <hr>
-<form  action="{{url('/photo-upload')}}" class="dropzone" id="DropzoneElement">{{ csrf_field() }}
+<form  action="{{url('/boat-photo-upload')}}" class="dropzone" id="DropzoneElement">{{ csrf_field() }}
 <div class="dz-message needsclick">
     <i class="fas fa-cloud-upload-alt text-center display-2 d-block mb-4"></i>
     <h4 class="mb-0 text-center">DRAG YOUR PICTURES HERE </h4>
@@ -13,8 +13,9 @@
 <div class="row">
 <template v-for="(image, idx) in images">
     <div class="col-md-6 mt-5">
-        <div class="room-image-container200" :style="{backgroundImage:'url(${image.url})'}"> 
-            <a v-if="image.cover_photo == 0" class="photo-delete text-right" href="javascript:void(0)" @click="deletePhoto(image)"><p class="photo-delete-icon"><i class="fa fa-trash text-danger p-4"></i></p></a>
+        <div class="room-image-container200" v-bind:style="{ 'background-image': 'url(' + s3_bucket_path.slice(0,-1)
+        + image.s3url + ')' }"> 
+            <a v-if="image.cover_photo == 0" class="photo-delete text-right" href="javascript:void(0)" @click="deletePhoto(image.id)"><p class="photo-delete-icon"><i class="fa fa-trash text-danger p-4"></i></p></a>
         </div>
 
         <div class="row mt-5">

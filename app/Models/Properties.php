@@ -16,13 +16,13 @@ class Properties extends Model
     protected $guarded = ['id'];
     use SoftDeletes;
 
-    protected $appends = ['steps_completed','space_type_name','property_type_name','property_photo','host_name', 'reviews_count', 'overall_rating', 'cover_photo','avg_rating'];
+    protected $appends = ['steps_completed','space_type_name','property_type_name','host_name', 'property_address','reviews_count', 'overall_rating', 'cover_photo','avg_rating'];
 
 
     public static function recommendedHome()
     {
         $data = parent::where('status', 'listed')
-                        ->with('users','property_price', 'property_address')
+                        ->with('users','property_price')
                         ->where('recomended', '1')
                         ->take(8)
                         ->inRandomOrder()
@@ -30,6 +30,10 @@ class Properties extends Model
         return $data;
     }
 
+    public function getPropertyAddressAttribute(){
+        $result = Address::where('addressable_id', $this->attributes['id'])->where('addressable_type', 'App\Models\Properties')->first();
+        return $result;
+    }
 
     public function getHostNameAttribute()
     {
@@ -45,19 +49,25 @@ class Properties extends Model
         
     }
 
-    public function scopeOnlyLive($q){
-        return $q->has('property_photos', '>=', 4);
-    }
+    // public function scopeOnlyLive($q){
+    //     return $q->has('property_photos', '>=', 4);
+    // }
 
-    public function isLive(){
-        return count($this->property_photos) >= 4 ? true : false;
-    }
+    // public function isLive(){
+    //     return count($this->property_photos) >= 4 ? true : false;
+    // }
 
     public function getPropertyPhotoAttribute()
     {
-        $result = PropertyPhotos::where('property_id', $this->attributes['id'])->first();
+        $result = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'Property')->first();
         return (isset($result->photo) ? $result->photo : '') ;
     }
+
+    // public function getPropertyPhotoAttribute()
+    // {
+    //     $result = PropertyPhotos::where('property_id', $this->attributes['id'])->first();
+    //     return (isset($result->photo) ? $result->photo : '') ;
+    // }
 
     public function getPropertyTypeNameAttribute()
     {
@@ -147,10 +157,10 @@ class Properties extends Model
         return $this->belongsTo('App\Models\PropertyType', 'property_type', 'id');
     }
 
-    public function property_address()
-    {
-        return $this->morphOne(Address::class, 'addressable');
-    }
+    // public function property_address()
+    // {
+    //     return $this->morphOne(Address::class, 'addressable');
+    // }
 
     public function address()
     {
@@ -190,10 +200,10 @@ class Properties extends Model
         return $this->hasOne('App\Models\PropertyPrice', 'property_id', 'id');
     }
 
-    public function property_photos()
-    {
-        return $this->hasMany('App\Models\PropertyPhotos', 'property_id', 'id');
-    }
+    // public function property_photos()
+    // {
+    //     return $this->hasMany('App\Models\PropertyPhotos', 'property_id', 'id');
+    // }
     
     public function property_rules()
     {
@@ -217,7 +227,7 @@ class Properties extends Model
 
     public function getCoverPhotoAttribute()
     {
-        $cover = PropertyPhotos::where('property_id', $this->attributes['id'])->where('cover_photo', 1)->first();
+        $cover = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'Property')->where('cover_photo', 1)->first();
         if (isset($cover->photo)) {
             $url = s3Url($cover->photo, $this->attributes['id']);
         } else {

@@ -9,10 +9,12 @@ use App\Http\Helpers\Common;
 use Session, Auth, Validator, App, Image, Storage;
 
 use App\Models\{
+    Boat,
     Settings,
     language,
     Photo,
-    User
+    User,
+    PropertySteps
 };
 
 
@@ -69,7 +71,7 @@ class PartnerController extends Controller
 
         $name = time().'_'.$name; 
 
-        $path = 'images/'.date('Ymd');
+        $path = 'images/boat/'.$request->photoable_id;
                         
         $image = Image::make($one_photo);
         $height = $image->height();
@@ -96,15 +98,29 @@ class PartnerController extends Controller
 
         $image->fit($applicable_width, $applicable_height)->encode($extension, 40);
 
+        $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->count();
+                   
+        if ($photo_exist_first!=0) {
+            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->take(1)->first();
+        }
+
         //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
-        $path = Storage::put($path."/".$name, $image->stream(), 'public');
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
 
         $photo = new Photo();
         $photo->photoable_type   = $request->photoable_type;
         $photo->photoable_id   = $request->photoable_id;
         $photo->photo         = $name;
-        $photo->save();
+        if ($photo_exist_first != 0) {
+            $photo->serial = $photo_exist->serial+1;
+        } else {
+            $photo->serial = $photo_exist_first+1;
+        }
 
+        if (!$photo_exist_first) {
+            $photo->cover_photo     = 1;
+        }
+        $photo->save();
 
         return response()->json(['success'=>$photo."/".$name]);
     }
@@ -174,7 +190,69 @@ class PartnerController extends Controller
             }
         }
     }
+    public function boatUpload(Request $request){
+       
+         $one_photo = $request->file('file');
 
+        $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
+                                    
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+
+        $name = time().'_'.$name; 
+
+        $path = '/images/boat/'.$request->photoable_id;
+                     
+        $image = Image::make($one_photo);
+        $height = $image->height();
+        $width = $image->width();
+        if($height>900){
+            if(ceil((16/9)*900)<$width){
+                $height = 900;
+                $width = ceil((16/9)*$height);
+            }
+        }
+
+        $calculated_width = ceil((16/9)*$height);
+        $calculated_height = ceil($width/(16/9));
+        $applicable_height = 0;
+        $applicable_width = 0;
+        
+        if($height >= $calculated_height){
+            $applicable_height = $calculated_height;
+            $applicable_width = $width;
+        }else{
+            $applicable_height = $height;
+            $applicable_width = $calculated_width;
+        }
+
+        $image->fit($applicable_width, $applicable_height)->encode($extension, 40);
+
+        $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->count();
+                   
+        if ($photo_exist_first!=0) {
+            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->take(1)->first();
+        }
+
+        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
+
+        $photo = new Photo();
+        $photo->photoable_type   = $request->photoable_type;
+        $photo->photoable_id   = $request->photoable_id;
+        $photo->photo         = $name;
+        if ($photo_exist_first != 0) {
+            $photo->serial = $photo_exist->serial+1;
+        } else {
+            $photo->serial = $photo_exist_first+1;
+        }
+
+        if (!$photo_exist_first) {
+            $photo->cover_photo     = 1;
+        }
+        $photo->save();
+
+        return response()->json(['success'=>$photo."/".$name]);
+    }
     private function get_intend_url() {
         $guestDomain = config('services.domain.guest');
         return redirect()->to($guestDomain . "/dashboard"); 

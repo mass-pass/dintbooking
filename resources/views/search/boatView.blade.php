@@ -627,7 +627,7 @@
                                     '<div class="col-lg-5 p-2">' +
                                     '<div class="img-event">' +
                                     '<a href="' + APP_URL + '/boats/' + boats[key].slug + '?travelling_date='+boat_date+ '" target="_blank">' +
-                                    '<img class="img-fluid rounded" src="' + boats[key].photo + '" alt="' + boats[key].name + '">' +
+                                    '<img class="img-fluid rounded" src="' + boats[key].cover_photo + '" alt="' + boats[key].name + '">' +
                                     '</a>' +
                                     '</div>' +
                                     '</div>'

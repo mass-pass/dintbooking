@@ -42,7 +42,7 @@ Route::match(['GET', 'POST'], '/discounts/{id}/delete', 'API\BookingsController@
 
 Route::match(['GET', 'POST'], '/images/save', 'API\ImagesController@save');
 Route::match(['GET', 'POST'], '/images/get/{type}/{id}', 'API\ImagesController@get');
-
+Route::post('images/delete/{id}', 'API\ImagesController@delete');
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('changephoto', 'API\UserController@photoUpload');

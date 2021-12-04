@@ -2,15 +2,13 @@
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ url('css/glyphicon.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ url('js/ninja/ninja-slider.min.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url('js/ninja-slider.min.css') }}" />
 @endpush
 @section('main')
-
 <input type="hidden" id="front_date_format_type" value="{{ Session::get('front_date_format_type')}}">
-
 <div class="carousel-inner" role="listbox">
 	<div class="item active">
-		<div class="ex-image-container" onclick="lightbox(0)" style="background-image:url({{$result->cover_photo}});">
+		<div class="ex-image-container" onclick="lightbox(0)" style="background-image:url({{$result_boat->cover_photo}});">
 		</div>
 	</div>
 </div>
@@ -296,6 +294,60 @@
 						<!-- photos -->
 					</div>
 				
+					<!--popup slider-->
+					<div class="d-none" id="showSlider">
+						<div id="ninja-slider">
+							<div class="slider-inner">
+								<ul>
+									@foreach($boat_photos as $row_photos)
+										<li>
+											<a class="ns-img" href="{{ s3Url($row_photos->photo, $boat_id) }}" aria-label="photo"></a>
+										</li>
+									@endforeach
+								</ul>
+								<div id="fsBtn" class="fs-icon" title="Expand/Close"></div>
+							</div>
+						</div>
+					</div>
+
+					<!--popup slider end-->
+					@if(count($boat_photos) > 0)
+						<div class="row mt-4">
+							<div class="col-md-12 col-sm-12 pl-3 pr-3">
+								<div class="row">
+									@php $i=0 @endphp
+									
+									@foreach($boat_photos as $row_photos)
+										@if($i == 0)
+											<div class="col-md-12 col-sm-12 mb-2 mt-2 p-2">
+												<div class="slider-image-container" onclick="lightbox({{$i}})" style="background-image:url({{ s3Url($row_photos->photo, $boat_id) }});">
+												</div>
+											</div>
+										@elseif($i <= 4)
+											@if($i==4) 
+												<div class="col-md-3 col-sm-4 mt-2 p-2">
+													<div class="view-all">
+														<img src="{{  s3Url($row_photos->photo, $boat_id) }}" alt="property-photo" class="img-fluid rounded" onclick="lightbox({{$i}})" />
+														<span class="position-center cursor-pointer" onclick="lightbox({{$i}})">{{trans('messages.property_single.view_all')}}</span>
+													</div>
+												</div> 
+												
+											@else 
+												<div class="col-md-3 col-sm-4 mt-2  p-2">
+													<img src="{{ s3Url($row_photos->photo, $boat_id) }}" alt="property-photo" class="img-fluid rounded" onclick="lightbox({{$i}})" />
+												</div>
+											@endif
+										@else
+											@php break; @endphp
+										@endif
+										@php $i++ @endphp
+									@endforeach
+								</div>
+							</div>
+						</div>
+						<hr>
+					@endif
+					<!--Start Reviews-->
 					<!--Start Reviews-->
 					@if(!$result->reviews->count())
 						<div class="mt-5">
@@ -550,7 +602,7 @@
 <script type="text/javascript" src='https://maps.google.com/maps/api/js?key={{ @$map_key }}&libraries=places'></script>
 <script type="text/javascript" src="{{ url('js/locationpicker.jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/jquery.validate.min.js') }}"></script>
-<script type="text/javascript" src="{{ url('js/ninja/ninja-slider.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/ninja-slider.js') }}"></script>
 <!-- daterangepicker -->
 <script type="text/javascript" src="{{ url('js/moment.min.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/daterangepicker.min.js')}}"></script>
@@ -706,6 +758,7 @@ function setCircle(map){
 }
 
 function lightbox(idx) {
+	console.log(idx);
 	//show the slider's wrapper: this is required when the transitionType has been set to "slide" in the ninja-slider.js
 	$('#showSlider').removeClass("d-none");
 	nslider.init(idx);

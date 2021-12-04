@@ -10,7 +10,7 @@ use App\Models\Properties;
 use App\Models\PropertyPrice;
 use App\Models\Amenities;
 use App\Models\AmenityType;
-
+use App\Models\Photo;
 use App\Models\Address;
 use App\Models\PropertyBedsApartment;
 use Illuminate\Http\Request;
@@ -44,7 +44,7 @@ class PropertyDetailController extends Controller
     public function detailsLocation(Request $request, $id)
     {
         $title = 'Property Location';
-        $property = Properties::with(['property_address'])->findOrFail($id);
+        $property = Properties::findOrFail($id);
         Gate::authorize('update-property', $property);
         $countries = Country::orderBy('name','asc')->get();
         if ($request->isMethod('post')) {
@@ -91,7 +91,7 @@ class PropertyDetailController extends Controller
     public function detailsPropertyDetails(Request $request, $id)
     {
         $title = 'Property Details';
-        $property = Properties::with(['property_address'])->findOrFail($id);
+        $property = Properties::findOrFail($id);
         $propertyBedsApartments = PropertyBedsApartment::where('property_id', $id)->get();
         Gate::authorize('update-property', $property);
         if ($request->isMethod('post')) {
@@ -110,7 +110,7 @@ class PropertyDetailController extends Controller
     public function detailsBedroom(Request $request, $id)
     {
         $title = 'Bedroom';
-        $property = Properties::with(['property_address'])->findOrFail($id);
+        $property = Properties::findOrFail($id);
         Gate::authorize('update-property', $property);
         if ($request->isMethod('post')) {
             
@@ -205,6 +205,7 @@ class PropertyDetailController extends Controller
     {
         $title = 'Photo';
         $property = Properties::findOrFail($id);
+        $property_photo = Photo::where('photoable_type','Property')->where('photoable_id', $id)->get();
         Gate::authorize('update-property', $property);
         if ($request->isMethod('post')) {
             //Perform insertion
@@ -212,7 +213,7 @@ class PropertyDetailController extends Controller
             return redirect()->route('partner.property.details.pricePerNight',$id);
 
         }
-        return view('property.details.photo',compact('title','property'));
+        return view('property.details.photo',compact('title','property','property_photo'));
     }
     public function detailsPhotoAirBnb(Request $request, $id)
     {

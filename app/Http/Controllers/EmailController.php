@@ -302,7 +302,7 @@ class EmailController extends Controller
         return true;
     }
 
-    public function account_preferences($account_id, $type = 'update', $updateTime )
+    public function account_preferences($account_id, $updateTime, $type = 'update')
     {
         $emailSettings   = Settings::where('type', 'email')->get()->toArray();
         $emailConfig     = $this->helper->key_value('name', 'value', $emailSettings);
@@ -424,7 +424,8 @@ class EmailController extends Controller
         $data['url']     = url('/').'/';
         $data['result']  = Bookings::where('bookings.id', $booking_id)->with(['users', 'properties', 'host', 'currency', 'messages'])->first()->toArray();
         $data['url']        = url('/').'/';
-        $data['logo']       = LOGO_URL;
+        // $data['logo']       = LOGO_URL;
+        $data['logo']       = APP_LOGO_URL;    
 
         if ($booking->status == 'Pending') {
             $data['view']       = resource_path('views/sendmail/booking.blade.php');

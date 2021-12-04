@@ -29,14 +29,14 @@
           <div class="row">
             <div class="col-md-8 col-sm-12 col-xs-12 mb20">
               <label class="label-large">{{trans('messages.listing_description.listing_name')}} <span class="text-danger">*</span></label>
-              <input type="text" name="name" class="form-control" value="{{ !is_null($description) ? $description->properties->name:'' }}" placeholder="" maxlength="100">
+              <input type="text" name="name" class="form-control" value="{{  ($description && $description->properties) ? $description->properties->name : '' }}" placeholder="" maxlength="100">
               <span class="text-danger">{{ $errors->first('name') }}</span>
             </div>
           </div>
           <div class="row">
             <div class="col-md-8  col-sm-12 col-xs-12 mb20">
               <label class="label-large">{{trans('messages.listing_description.summary')}} <span class="text-danger">*</span></label>
-              <textarea class="form-control" name="summary" rows="6" placeholder="" maxlength="500" ng-model="summary">{{ !is_null($description) ? $description->summary:''  }}</textarea>
+              <textarea class="form-control" name="summary" rows="6" placeholder="" maxlength="500" ng-model="summary">{{ $description->summary ? $description->summary : '' }}</textarea>
               <span class="text-danger">{{ $errors->first('summary') }}</span>
             </div>
           </div>

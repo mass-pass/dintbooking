@@ -22,6 +22,7 @@ use DateTime;
 use Session;
 use Validator;
 use DB;
+use Omnipay\Common\Helper;
 
 class ImagesController extends Controller
 {
@@ -53,8 +54,17 @@ class ImagesController extends Controller
     public function get(Request $request, $type, $id){
         $type = ucwords(strtolower($type));
         $images = $this->photo->where('photoable_type', '=', $type)->where('photoable_id', '=', $id)->get();
-
+        $images = $images->map(function($img) {
+            $img->s3url = s3BoatUrl($img->photo, $img->photoable_id);
+            return $img;
+        });
         return response()->json(['success'=>$images], $this->successStatus);
+    }
+
+    public function delete(Request $request, $id){
+        $photos   = Photo::find($id);
+        $photos->delete(); 
+        return response()->json(['success'=>true], $this->successStatus);
     }
 
 }

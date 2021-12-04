@@ -2,13 +2,18 @@
 $serial = 0;
 ?>
 <div class="row">
+@if ($s3_path != '')
+    <?php $path = $s3_path; ?>
+@else
+    <?php $path = env('S3_BUCKET_PATH'); ?>
+@endif
 @foreach($photos as $photo)
 <?php
     $serial++;
 ?>
 
 <div class="col-md-6 mt-5" id="photo-div-{{$photo->id}}">
-    <div class="room-image-container200" style="background-image:url({{ s3Url($photo) }});"> 
+    <div class="room-image-container200 tep" style="background-image:url({{ s3PropertyUrl($photo, $path) }});"> 
         @if($photo->cover_photo == 0)
             <a class="photo-delete text-right" href="javascript:void(0)" data-rel="{{$photo->id}}"><p class="photo-delete-icon"><i class="fa fa-trash text-danger p-4"></i></p></a>
         @endif

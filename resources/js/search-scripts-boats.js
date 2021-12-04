@@ -196,7 +196,6 @@ var buildResult = function (map, result, req) {
             var avg_rating = 0;
             reviews_count = 0;
             var symbolWithPrice = '$ ' + boats[key].price;
-
             var colDiv = 'col-md-6 col-lg-4 p-2';
             var divCol = $('#listCol').hasClass('col-md-7');
 
@@ -205,7 +204,7 @@ var buildResult = function (map, result, req) {
                 '<div class="col-lg-5 p-2">' +
                 '<div class="img-event">' +
                 '<a href="' + APP_URL + '/boats/' + boats[key].slug + '?travelling_date=' + req.boat_date + '" target="_blank">' +
-                '<img class="img-fluid rounded" src="' + ((boats[key].photo) ? boats[key].photo : '/images/no-boat-photo.jpeg') + '" alt="' + boats[key].name + '">' +
+                '<img class="img-fluid rounded" src="' + ((boats[key].cover_photo) ? boats[key].cover_photo : '/images/no-boat-photo.jpeg') + '" alt="' + boats[key].name + '">' +
                 '</a>' +
                 '</div>' +
                 '</div>'
@@ -230,7 +229,7 @@ var buildResult = function (map, result, req) {
 
                 +
                 '<div>' +
-                '<span class="font-weight-700 text-20">' + symbolWithPrice + '</span> / Per Day' +
+                '<span class="font-weight-700 text-20">' + symbolWithPrice + '</span> / Per Days' +
                 '</div>' +
                 '</div>' +
                 '</div>'

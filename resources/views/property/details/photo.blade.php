@@ -63,7 +63,7 @@ box-shadow: inset 0px 0px 0px 0.25em black;
                             $serial = 0;
                             ?>
                             <div class="row">
-                                @foreach($property->property_photos as $photo)
+                                @foreach($property_photo as $photo)
                                     <?php
                                         $serial++;
                                     ?>
@@ -159,125 +159,128 @@ box-shadow: inset 0px 0px 0px 0.25em black;
 		<script src="/js/dropzone.min.js"></script>
 
 <script type="text/javascript">
-
-Dropzone.autoDiscover = false;
+    var propertyID = {{ $property->id }};
+    Dropzone.autoDiscover = false;
+    
     $(function(){
-
-      var myDropzone = new Dropzone("form#DropzoneElement", {  url: "{{ url('listing/'.$property->id.'/photo-upload') }}" });
-      console.log({dd:myDropzone});
-      myDropzone.on("queuecomplete", function(file, res) {
-        $.ajax({
-          url: '/listing/<?php echo $property->id;?>/photo-selectables',
-          data: {'property_id':<?php echo $property->id;?>, '_token': '{{ csrf_token() }}'},
-          type: 'post',
-          dataType: 'json',
-          success: function (result) {
-            $('#photo-list-div').html(result.html);
-          },
-          error: function (request, error) {
-          }
+        var myDropzone = new Dropzone("form#DropzoneElement", 
+        {  
+            url: "{{ url('listing/'.$property->id.'/photo-upload') }}",
+            sending: function(file, xhr, formData) {
+                formData.append("photoable_type", "Property");  //name and value
+                formData.append("property_id", propertyID); //name and value
+            },
         });
-      });
+        myDropzone.on("queuecomplete", function(file, res) {
+            $.ajax({
+                url: '/listing/<?php echo $property->id;?>/photo-selectables',
+                data: {'property_id':<?php echo $property->id;?>, 'photoable_type': 'Property', '_token': '{{ csrf_token() }}'},
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    $('#photo-list-div').html(result.html);
+                },
+                error: function (request, error) {
+                }
+            });
+        });
 
+        $(document).on('click', '.photo-delete', function(e){
+            var gl_photo_id = $(this).attr('data-rel');
+            event.preventDefault();
+            swal({
+                title: "{{trans('messages.modal.are_you_sure')}}",
+                text: "{{trans('messages.modal.delete_message')}}",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "{{trans('messages.search.cancel')}}",
+                        value: null,
+                        visible: true,
+                        className: "btn btn-outline-danger text-16 font-weight-700  pt-3 pb-3 pl-5 pr-5",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "{{trans('messages.modal.ok')}}",
+                        value: true,
+                        visible: true,
+                        className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
+                        closeModal: true
+                    }
+                },
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    var dataURL  = '{{url("listing/$property->id/photo_delete")}}';
+                    var photo_id = gl_photo_id;
+                    page_loader_start();
+                    $.ajax({
+                        url: dataURL,
+                        data: {'photo_id':photo_id, '_token': '{{ csrf_token() }}'},
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result.success){
+                                $('#photo-div-'+photo_id).remove();
+                                swal({
+                                    icon: "success",
+                                    buttons: {
+                                        confirm: {
+                                            text: "Deleted!",
+                                            value: true,
+                                            visible: true,
+                                            className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
+                                            closeModal: true
+                                        }
+                                    },
+                                });
+                            }
+                        },
+                        error: function (request, error) {
+                            console.log(error);
+                            }
+                    });
+                    page_loader_stop();
+                }
+            });
+        });
 
+        $(document).on('change', '#photoId', function(ev){
+            var dataURL      = '{{url("listing/photo/make_default_photo")}}';
+            var option_value = $(this).val();
+            var photoable_type = 'Property';
+            var photo_id     = $('option:selected', this).attr('image_id');
+            var property_id  = $('option:selected', this).attr('property_id'); 
+            page_loader_start();
+            $.ajax({
+                url: dataURL,
+                data: {'photo_id':photo_id, 'property_id':property_id, 'photoable_type':photoable_type,'option_value':option_value, '_token': '{{ csrf_token() }}'},
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                location.reload();
+                }
+            });
+            page_loader_stop();
+        });
 
+        $(document).on('change', '.serial', function(ev){
+            var dataURL = '{{url("listing/photo/make_photo_serial")}}';
+            var serial = $(this).val();
+            var id     = $(this).attr('image_id');
 
-      
-			$(document).on('click', '.photo-delete', function(e){
-				var gl_photo_id = $(this).attr('data-rel');
-				console.log(name);
-				event.preventDefault();
-				swal({
-					title: "{{trans('messages.modal.are_you_sure')}}",
-					text: "{{trans('messages.modal.delete_message')}}",
-					icon: "warning",
-				    buttons: {
-						cancel: {
-						    text: "{{trans('messages.search.cancel')}}",
-						    value: null,
-						    visible: true,
-						    className: "btn btn-outline-danger text-16 font-weight-700  pt-3 pb-3 pl-5 pr-5",
-						    closeModal: true,
-						},
-						confirm: {
-						    text: "{{trans('messages.modal.ok')}}",
-						    value: true,
-						    visible: true,
-						    className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
-						    closeModal: true
-						}
-				    },
-					dangerMode: true,
-				})
-				.then((willDelete) => {
-					if (willDelete) {
-						var dataURL  = '{{url("listing/$property->id/photo_delete")}}';
-						var photo_id = gl_photo_id;
-						page_loader_start();
-						$.ajax({
-							url: dataURL,
-							data: {'photo_id':photo_id, '_token': '{{ csrf_token() }}'},
-							type: 'post',
-							dataType: 'json',
-							success: function (result) {
-								if(result.success){
-									$('#photo-div-'+photo_id).remove();
-									swal({
-									  icon: "success",
-									  buttons: {
-											confirm: {
-											    text: "Deleted!",
-											    value: true,
-											    visible: true,
-											    className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
-											    closeModal: true
-											}
-										},
-									});
-								}
-							},
-							error: function (request, error) {
-								console.log(error);
-								}
-						});
-						page_loader_stop();
-					}
-				});
-			});
-
-			$(document).on('change', '#photoId', function(ev){
-				var dataURL      = '{{url("listing/photo/make_default_photo")}}';
-				var option_value = $(this).val();
-				var photo_id     = $('option:selected', this).attr('image_id');
-				var property_id  = $('option:selected', this).attr('property_id'); 
-				page_loader_start();
-				$.ajax({
-					url: dataURL,
-					data: {'photo_id':photo_id, 'property_id':property_id, 'option_value':option_value, '_token': '{{ csrf_token() }}'},
-					type: 'post',
-					dataType: 'json',
-					success: function (result) {
-					location.reload();
-					}
-				});
-				page_loader_stop();
-			});
-
-			$(document).on('change', '.serial', function(ev){
-				var dataURL = '{{url("listing/photo/make_photo_serial")}}';
-				var serial = $(this).val();
-				var id     = $(this).attr('image_id');
-
-				$.ajax({
-						url: dataURL,
-						data: {'id':id, 'serial':serial, '_token': '{{ csrf_token() }}'},
-						type: 'post',
-						dataType: 'json',
-						success: function (result) {
-						location.reload();
-					}
-				});
-			});
+            $.ajax({
+                    url: dataURL,
+                    data: {'id':id, 'serial':serial, '_token': '{{ csrf_token() }}'},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (result) {
+                    location.reload();
+                }
+            });
+        });
 
     });
 
