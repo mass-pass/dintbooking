@@ -13,10 +13,10 @@ class PropertyAddress extends Model
     protected $guarded = ['id'];
     public $timestamps = false;
 
-    public function properties()
-    {
-        return $this->belongsTo('App\Models\Properties', 'property_id', 'id');
-    }
+    // public function properties()
+    // {
+    //     return $this->belongsTo('App\Models\Properties', 'property_id', 'id');
+    // }
 
     public function countries()
     {

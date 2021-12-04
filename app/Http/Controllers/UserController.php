@@ -353,7 +353,7 @@ class UserController extends Controller
             $updateTime = dateFormat($account->updated_at);
 
 
-            $email_controller->account_preferences($account->id,$type = "update", $updateTime);
+            $email_controller->account_preferences($account->id, $updateTime, 'update');
 
             $this->helper->one_time_message('success', trans('messages.success.payout_update_success'));
             return redirect('users/account-preferences');
@@ -371,7 +371,7 @@ class UserController extends Controller
 
             $account->delete();
             $updateTime = dateFormat($account->updated_at);
-            $email_controller->account_preferences($account->id, 'delete', $updateTime);
+            $email_controller->account_preferences($account->id, $updateTime, 'delete');
 
             $this->helper->one_time_message('success', "Payout account successfully deleted");
             return redirect('users/account-preferences');
@@ -394,7 +394,7 @@ class UserController extends Controller
             $account->save();
             $updateTime = dateFormat($account->updated_at);
 
-            $email_controller->account_preferences($account->id, 'default_update', $updateTime );
+            $email_controller->account_preferences($account->id, $updateTime, 'default_update' );
 
             $this->helper->one_time_message('success', trans('messages.success.default_payout_success'));
             return redirect('users/account-preferences');

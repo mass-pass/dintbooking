@@ -559,6 +559,7 @@ Route::group(['domain' => $partnerDomain], function() {
         Route::get('login', 'PartnerController@index');
         Route::post('authenticate', 'PartnerController@authenticate');
         Route::match(array('GET', 'POST'),'/photo-upload', 'PartnerController@photoUpload');
+        Route::match(array('GET', 'POST'),'/boat-photo-upload', 'PartnerController@boatUpload');
         Route::match(array('GET', 'POST'),'/file-upload', 'PartnerController@fileUpload')->name('property.show');
     });
 

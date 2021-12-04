@@ -134,14 +134,10 @@
 
 											<div class="row">
 												<div id="photo-list-div" class="col-md-12 p-0">
-													<?php
-															$serial = 0;
-															?>
+													<?php $serial = 0; ?>
 													<div class="row">
 														@foreach($photos as $photo)
-														<?php
-																		$serial++;
-																	?>
+														<?php $serial++; ?>
 
 														<div class="col-md-6 mt-5" id="photo-div-{{$photo->id}}">
 															<div class="room-image-container200"
@@ -281,6 +277,7 @@
 @endif
 
 <script type="text/javascript">
+	var propertyID = {{ $result->id }};
 	Dropzone.autoDiscover = false;
 
 	var loadPhotos = function() {
@@ -288,7 +285,7 @@
 			const url = '/listing/<?php echo $result->id;?>/photo-selectables';
 			$.ajax({
 				url: url,
-				data: {'property_id':<?php echo $result->id;?>, '_token': '{{ csrf_token() }}'},
+				data: {'property_id':<?php echo $result->id;?>, 'photoable_type': 'Property', '_token': '{{ csrf_token() }}'},
 				type: 'get',
 				dataType: 'json',
 				success: function (result) {
@@ -302,8 +299,12 @@
 
     $(function() {
 
-      var myDropzone = new Dropzone("form#DropzoneElement", {  
-		  url: "{{ url('listing/'.$result->id.'/photo-upload') }}" 
+      	var myDropzone = new Dropzone("form#DropzoneElement", {  
+			url: "{{ url('listing/'.$result->id.'/photo-upload') }}",
+			sending: function(file, xhr, formData) {
+				formData.append("photoable_type", "Property");  //name and value
+				formData.append("property_id", propertyID); //name and value
+			},
 		});
 		//console.log({dd:myDropzone});
 		myDropzone.on("queuecomplete", function(file, res) {
@@ -311,179 +312,179 @@
 		});
     });
 
+	var gl_photo_id = 0;
+	$(document).on('submit', '#photo-form', function(e){
+		e.preventDefault();
+		$('#photo').hide();
+		var dataURL = '{{url("add_photos/$result->id")}}';
+		var form_data = new FormData(this);
+		var photo_file = $('#photo_file').val();
+		if(photo_file != ''){
+			page_loader_start();
+			$.ajax({
+			url: dataURL,
+			data: {
+				form_data,
+				'_token': '{{ csrf_token() }}'
+			},
+			type: 'post',
+			dataType: 'json',
+			processData: false,
+			contentType: false,
+			success: function (result) {
+				loadPhotos();
+				/*
+				if(result.status) {
+				var photo_url = '{{url("images/rooms/$result->id")}}'+'/'+result.photo_name;
+				var photo_div = '<div class="col-md-4 margin-top10" id="photo-div-'+result.photo_id+'">'
+				+'<div class="room-image-container200" style="background-image:url('+photo_url+');">'
+				+'<a class="photo-delete" href="#" data-rel="'+result.photo_id+'"><p class="photo-delete-icon"><i class="fa fa-trash-o"></i></p></a>'
+				+'</div>'
+				+'<div class="margin-top5">'
+				+'<textarea data-rel="'+result.photo_id+'" class="form-control photo-highlights" placeholder="'+"{{ trans('messages.lys.highlights_photo') }}"+'"></textarea>'
+				+'</div>'
+				+'</div>';
+				$('#photo-list-div').append(photo_div);
+				}
+				else
+				$('#photo').show();
+				*/
 
-			var gl_photo_id = 0;
-			$(document).on('submit', '#photo-form', function(e){
-				e.preventDefault();
-				$('#photo').hide();
-				var dataURL = '{{url("add_photos/$result->id")}}';
-				var form_data = new FormData(this);
-				var photo_file = $('#photo_file').val();
-				if(photo_file != ''){
-					page_loader_start();
-					$.ajax({
-					url: dataURL,
-					data: {
-						form_data,
-						'_token': '{{ csrf_token() }}'
-					},
-					type: 'post',
-					dataType: 'json',
-					processData: false,
-					contentType: false,
-					success: function (result) {
-						loadPhotos();
-						/*
-						if(result.status) {
-						var photo_url = '{{url("images/rooms/$result->id")}}'+'/'+result.photo_name;
-						var photo_div = '<div class="col-md-4 margin-top10" id="photo-div-'+result.photo_id+'">'
-						+'<div class="room-image-container200" style="background-image:url('+photo_url+');">'
-						+'<a class="photo-delete" href="#" data-rel="'+result.photo_id+'"><p class="photo-delete-icon"><i class="fa fa-trash-o"></i></p></a>'
-						+'</div>'
-						+'<div class="margin-top5">'
-						+'<textarea data-rel="'+result.photo_id+'" class="form-control photo-highlights" placeholder="'+"{{ trans('messages.lys.highlights_photo') }}"+'"></textarea>'
-						+'</div>'
-						+'</div>';
-						$('#photo-list-div').append(photo_div);
-						}
-						else
-						$('#photo').show();
-						*/
+			},
+			error: function (request, error) {
+				// This callback function will trigger on unsuccessful action
+				show_error_message('Det har oppstått nettverksfeil vennligst prøv igjen');
+			}
+		});
 
-					},
-					error: function (request, error) {
-						// This callback function will trigger on unsuccessful action
-						show_error_message('Det har oppstått nettverksfeil vennligst prøv igjen');
-					}
-				});
+		$('#photo_file').val('');
+			page_loader_stop();
+		}
+	});
 
-				$('#photo_file').val('');
-					page_loader_stop();
+	$(document).on('focusout', '.photo-highlights', function(e){
+			var dataURL = '{{url("listing/$result->id/photo_message")}}';
+			var photo_id = $(this).attr('data-rel');
+			var messages = $(this).val();
+			$.ajax({
+				url: dataURL,
+				data: {'photo_id':photo_id, 'messages':messages, '_token': '{{ csrf_token() }}'},
+				type: 'post',
+				dataType: 'json',
+				success: function (result) {
+				},
+				error: function (request, error) {
+					// This callback function will trigger on unsuccessful action
+					show_error_message('Det har oppstått nettverksfeil vennligst prøv igjen');
 				}
 			});
-
-			$(document).on('focusout', '.photo-highlights', function(e){
-					var dataURL = '{{url("listing/$result->id/photo_message")}}';
-					var photo_id = $(this).attr('data-rel');
-					var messages = $(this).val();
-					$.ajax({
-						url: dataURL,
-						data: {'photo_id':photo_id, 'messages':messages, '_token': '{{ csrf_token() }}'},
-						type: 'post',
-						dataType: 'json',
-						success: function (result) {
-						},
-						error: function (request, error) {
-							// This callback function will trigger on unsuccessful action
-							show_error_message('Det har oppstått nettverksfeil vennligst prøv igjen');
-						}
-					});
-			})
+	})
 
 
-			$(document).on('click', '.photo-delete', function(e){
-				var gl_photo_id = $(this).attr('data-rel');
-				console.log(name);
-				event.preventDefault();
-				swal({
-					title: "{{trans('messages.modal.are_you_sure')}}",
-					text: "{{trans('messages.modal.delete_message')}}",
-					icon: "warning",
-				    buttons: {
-						cancel: {
-						    text: "{{trans('messages.search.cancel')}}",
-						    value: null,
-						    visible: true,
-						    className: "btn btn-outline-danger text-16 font-weight-700  pt-3 pb-3 pl-5 pr-5",
-						    closeModal: true,
-						},
-						confirm: {
-						    text: "{{trans('messages.modal.ok')}}",
-						    value: true,
-						    visible: true,
-						    className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
-						    closeModal: true
-						}
-				    },
-					dangerMode: true,
-				})
-				.then((willDelete) => {
-					if (willDelete) {
-						var dataURL  = '{{url("listing/$result->id/photo_delete")}}';
-						var photo_id = gl_photo_id;
-						page_loader_start();
-						$.ajax({
-							url: dataURL,
-							data: {'photo_id':photo_id, '_token': '{{ csrf_token() }}'},
-							type: 'post',
-							dataType: 'json',
-							success: function (result) {
-								if(result.success){
-									$('#photo-div-'+photo_id).remove();
-									swal({
-									  icon: "success",
-									  buttons: {
-											confirm: {
-											    text: "Deleted!",
-											    value: true,
-											    visible: true,
-											    className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
-											    closeModal: true
-											}
-										},
-									});
-								}
-							},
-							error: function (request, error) {
-								console.log(error);
-								}
-						});
-						page_loader_stop();
-					}
-				});
-			});
-
-			$(document).on('change', '#photoId', function(ev){
-				var dataURL      = '{{url("listing/photo/make_default_photo")}}';
-				var option_value = $(this).val();
-				var photo_id     = $('option:selected', this).attr('image_id');
-				var property_id  = $('option:selected', this).attr('property_id'); 
+	$(document).on('click', '.photo-delete', function(e){
+		var gl_photo_id = $(this).attr('data-rel');
+		console.log(name);
+		event.preventDefault();
+		swal({
+			title: "{{trans('messages.modal.are_you_sure')}}",
+			text: "{{trans('messages.modal.delete_message')}}",
+			icon: "warning",
+			buttons: {
+				cancel: {
+					text: "{{trans('messages.search.cancel')}}",
+					value: null,
+					visible: true,
+					className: "btn btn-outline-danger text-16 font-weight-700  pt-3 pb-3 pl-5 pr-5",
+					closeModal: true,
+				},
+				confirm: {
+					text: "{{trans('messages.modal.ok')}}",
+					value: true,
+					visible: true,
+					className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
+					closeModal: true
+				}
+			},
+			dangerMode: true,
+		})
+		.then((willDelete) => {
+			if (willDelete) {
+				var dataURL  = '{{url("listing/$result->id/photo_delete")}}';
+				var photo_id = gl_photo_id;
 				page_loader_start();
 				$.ajax({
 					url: dataURL,
-					data: {'photo_id':photo_id, 'property_id':property_id, 'option_value':option_value, '_token': '{{ csrf_token() }}'},
+					data: {'photo_id':photo_id, '_token': '{{ csrf_token() }}'},
 					type: 'post',
 					dataType: 'json',
 					success: function (result) {
-					location.reload();
-					}
+						if(result.success){
+							$('#photo-div-'+photo_id).remove();
+							swal({
+								icon: "success",
+								buttons: {
+									confirm: {
+										text: "Deleted!",
+										value: true,
+										visible: true,
+										className: "btn vbtn-outline-success text-16 font-weight-700 pl-5 pr-5 pt-3 pb-3 pl-5 pr-5",
+										closeModal: true
+									}
+								},
+							});
+						}
+					},
+					error: function (request, error) {
+						console.log(error);
+						}
 				});
 				page_loader_stop();
-			});
-
-			$(document).on('change', '.serial', function(ev){
-				var dataURL = '{{url("listing/photo/make_photo_serial")}}';
-				var serial = $(this).val();
-				var id     = $(this).attr('image_id');
-
-				$.ajax({
-						url: dataURL,
-						data: {'id':id, 'serial':serial, '_token': '{{ csrf_token() }}'},
-						type: 'post',
-						dataType: 'json',
-						success: function (result) {
-						location.reload();
-					}
-				});
-			});
-
-			function page_loader_start(){
-				$('body').prepend('<div id="preloader"></div>');
 			}
+		});
+	});
 
-			function page_loader_stop(){
-				$('#preloader').fadeOut('slow',function(){$(this).remove();});
+	$(document).on('change', '#photoId', function(ev){
+		var dataURL      = '{{url("listing/photo/make_default_photo")}}';
+		var option_value = $(this).val();
+		var photoable_type = 'Property';
+		var photo_id     = $('option:selected', this).attr('image_id');
+		var property_id  = $('option:selected', this).attr('property_id'); 
+		page_loader_start();
+		$.ajax({
+			url: dataURL,
+			data: {'photo_id':photo_id, 'property_id':property_id, 'photoable_type':photoable_type, 'option_value':option_value, '_token': '{{ csrf_token() }}'},
+			type: 'post',
+			dataType: 'json',
+			success: function (result) {
+			location.reload();
 			}
+		});
+		page_loader_stop();
+	});
+
+	$(document).on('change', '.serial', function(ev){
+		var dataURL = '{{url("listing/photo/make_photo_serial")}}';
+		var serial = $(this).val();
+		var id     = $(this).attr('image_id');
+
+		$.ajax({
+				url: dataURL,
+				data: {'id':id, 'serial':serial, '_token': '{{ csrf_token() }}'},
+				type: 'post',
+				dataType: 'json',
+				success: function (result) {
+				location.reload();
+			}
+		});
+	});
+
+	function page_loader_start(){
+		$('body').prepend('<div id="preloader"></div>');
+	}
+
+	function page_loader_stop(){
+		$('#preloader').fadeOut('slow',function(){$(this).remove();});
+	}
 </script>
 
 <script type="text/javascript">

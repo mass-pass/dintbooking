@@ -19,7 +19,8 @@ use App\Models\{
     Currency,
     PropertyDates,
     Boat,
-    BlockedDate
+    BlockedDate,
+    Photo
 };
 
 class SearchController extends Controller
@@ -82,7 +83,7 @@ class SearchController extends Controller
         }
 
         $data['max_price_check'] = $this->helper->convert_currency('', 'USD', $data['max_price']);
-
+          
         return view('search.view', $data);
 
 
@@ -222,28 +223,28 @@ class SearchController extends Controller
 
         $max_price_check = $this->helper->convert_currency('', 'USD', $max_price);
 
-        $properties = Properties::with(['property_address' => function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
-                      },
-                        'property_description',
-                        'property_price' => function ($query) use ($min_price, $max_price) {
-                            $query->with('currency');
-                        },
-                        'users'])
-                        ->whereHas('property_address', function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
-                                $query->whereRaw("latitude between $minLat and $maxLat and longitude between $minLong and $maxLong");
-                        })
-                        ->whereHas('property_price', function ($query) use ($min_price, $max_price, $currency_rate, $max_price_check) {
-                                $query->join('currency', 'currency.code', '=', 'property_price.currency_code');
-                            if ($max_price_check >= 750) {
-                                $query->whereRaw('((price / currency.rate) * '.$currency_rate.') >= '.$min_price);
-                            } else {
-                                $query->whereRaw('((price / currency.rate) * '.$currency_rate.') >= '.$min_price.' and ((price / currency.rate) * '.$currency_rate.') <= '.$max_price);
-                            }
-                        })
-                        ->whereHas('users', function ($query) use ($users_where) {
-                            $query->where($users_where);
-                        })
-                    ->whereNotIn('id', $not_available_property_ids);
+        $properties = Properties::with(['address' => function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
+        },
+                            'property_description',
+                            'property_price' => function ($query) use ($min_price, $max_price) {
+                                $query->with('currency');
+                            },
+                            'users'])
+                            ->whereHas('address', function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
+                                 $query->whereRaw("latitude between $minLat and $maxLat and longitude between $minLong and $maxLong");
+                            })
+                            ->whereHas('property_price', function ($query) use ($min_price, $max_price, $currency_rate, $max_price_check) {
+                                    $query->join('currency', 'currency.code', '=', 'property_price.currency_code');
+                                if ($max_price_check >= 750) {
+                                    $query->whereRaw('((price / currency.rate) * '.$currency_rate.') >= '.$min_price);
+                                } else {
+                                    $query->whereRaw('((price / currency.rate) * '.$currency_rate.') >= '.$min_price.' and ((price / currency.rate) * '.$currency_rate.') <= '.$max_price);
+                                }
+                            })
+                            ->whereHas('users', function ($query) use ($users_where) {
+                                $query->where($users_where);
+                            })
+                       ->whereNotIn('id', $not_available_property_ids);
         
         if ($properties_where) {
 
@@ -295,7 +296,7 @@ class SearchController extends Controller
     }
 
     public function boatSearch(Request $request)
-    {
+    { 
         $data['title'] = 'Boat Search';
         $location = $request->input('location');
         $address  = str_replace(" ", "+", "$location");
@@ -345,9 +346,8 @@ class SearchController extends Controller
         }
         return view('search.boatView', $data);
     }
-
     function searchBoatResult(Request $request)
-    {
+    {   
         $location = $request->input('location');
         $boat_date = $request->input('boat_date');
         $people = $request->input('people');
@@ -413,7 +413,6 @@ class SearchController extends Controller
         } else {
             $boatIds = array();
         }
-        
         $boats = Boat::whereHas('address', function($query) use ($city) {
             $query->where('city', 'like', '%' . $city . '%');
         });
@@ -449,6 +448,7 @@ class SearchController extends Controller
         
         $boats = $boats->paginate(Session::get('row_per_page'))->toJson();
         
-        echo $boats;exit;
+        echo $boats;
+        exit;
     }
 }

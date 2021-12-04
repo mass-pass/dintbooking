@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @push('css')
 {{-- <link rel="stylesheet" type="text/css" href="{{ url('css/daterangepicker.min.css')}}" />
-<link  rel="stylesheet" type="text/css" href="{{ url('css/glyphicon.css') }}"/>
-<link  rel="stylesheet" type="text/css"  href="{{ url('js/ninja/ninja-slider.min.css') }}" /> --}}
+<link  rel="stylesheet" type="text/css" href="{{ url('css/glyphicon.css') }}"/> --}}
+<link  rel="stylesheet" type="text/css"  href="{{ url('js/ninja-slider.min.css') }}" /> 
 @endpush
 @section('main')
 
@@ -855,7 +855,7 @@
 	</div>
 </div>
 
-	<div class="container-fluid container-fluid-90 mt-70 mb-5">
+	{{-- <div class="container-fluid container-fluid-90 mt-70 mb-5">
 		@if(count($similar)!= 0)
 			<div class="row">
 				<div class="col-md-12">
@@ -944,9 +944,9 @@
 				@endforeach
 			</div>
 		@endif
-	</div>
+	</div> --}}
 @push('scripts')
-
+<script type="text/javascript" src="{{ url('js/ninja-slider.js') }}"></script>
 <script type="text/javascript">
 
 	var checkin = $('#startDate').val();
@@ -954,7 +954,7 @@
 	var page = 'single'
 
 	dateRangeBtn(checkin, checkout, page);
-		
+</script>
 <script type="text/javascript">
 $("#view-calendar").on("click", function() {
 	return $("#startDate").trigger("select");

@@ -10,7 +10,7 @@
   */
 
 /*!
- * jQuery UI Datepicker 1.12.1
+ * jQuery UI Datepicker 1.13.0
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -19,7 +19,7 @@
  */
 
 /*!
- * jQuery UI Keycode 1.12.1
+ * jQuery UI Keycode 1.13.0
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -34,6 +34,16 @@
  * Copyright (c) 2020 Jörn Zaefferer; Licensed MIT */
 
 /*! jquery-locationpicker - v0.1.16 - 2017-10-02 */
+
+/*! no static exports found */
+
+/*!***********************************!*\
+    !*** ./resources/js/front.min.js ***!
+    \***********************************/
+
+/*!*****************************************!*\
+    !*** multi ./resources/js/front.min.js ***!
+    \*****************************************/
 
 /**
  * @license

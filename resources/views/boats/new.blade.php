@@ -127,7 +127,7 @@ Dropzone.autoDiscover = false;
 $(function(){
 	var imgDropzone = new Dropzone("form#DropzoneElement", 
 					{  
-						url: "{{ url('/photo-upload') }}",
+						url: "{{ url('/boat-photo-upload') }}",
 						sending: function(file, xhr, formData) {
 							formData.append("photoable_type", "Boat");  //name and value
 							formData.append("photoable_id", boatsApp.getBoatId()); //name and value
@@ -175,6 +175,7 @@ var boatsApp = new Vue({
 			language_selector:'',
 			blocked_date:{ blockable_type:"\App\\Models\\Boat", blockable_id:null, start_date:null, end_date:null, notes:null},
 			current_step:0,
+			s3_bucket_path:'<?php echo $s3_bucket_path;?>',
 			amenities:<?php echo json_encode($amenity_types);?>,
 			images:[],
 			languages:<?php echo json_encode($languages);?>,
@@ -453,6 +454,14 @@ var boatsApp = new Vue({
 				self.images = response.data.success;
 			});
 		},
+		deletePhoto(image_id) {
+			var self = this;
+			var url = '/api/images/delete/'+image_id;
+			axios.post(url).then(function(response){
+				self.loadImages();
+			});
+
+		}
 	}
 });
 

@@ -42,7 +42,8 @@ use App\Models\{
     PropertySteps,
     Country,
     Amenities,
-    AmenityType
+    AmenityType,
+    Photo
 };
 
 
@@ -59,25 +60,27 @@ class BoatsController extends Controller
 
         $data['boat_types'] = \App\Models\Boat::TYPES;
         $data['languages'] = getLanguagesList();
+        $data['s3_bucket_path'] = env('S3_BUCKET_PATH');
         asort($data['languages']);
         $data['amenity_types'] =  \App\Models\AmenityType::with('boat_amenities')->get();
         return view('boats.new', $data);
     }
 
-    public function single(Request $request, $slug)
+    public function single(Request $request, $slug) 
     {
         $data['title'] = $slug;
         $data['boat_date'] = $request->input('boat_date');
         $data['result'] = Boat::join('users', function ($join) {
                             $join->on('boats.owner_id', '=', 'users.id');
                         })->where('slug', $slug)->firstOrFail();
-                        
+        $data['result_boat'] = Boat::where('slug', $slug)->first();
+        $data['boat_photos'] = Photo::where('photoable_id', $data['result_boat']->id)->where('photoable_type', 'Boat')->orderBy('serial', 'asc')->get();
         $data['discounts'] = Boat::leftJoin('discounts', function ($join) {
                                 $join->on('boats.id', '=', 'discounts.discountable_id');
                                 $join->where('discounts.discountable_type', 'App\Models\Boat');
                             })->where('slug', $slug)->get();
                        
-        $data['boat_id'] = $data['result']->id;
+        $data['boat_id'] = $data['result_boat']->id;
         $address = ($data['result']->address) ? $data['result']->address->city : '';
        
         $map_where = 'https://maps.google.com/maps/api/geocode/json?key='.env('GOOGLE_MAP_API_KEY').'&address='.$address.'&sensor=false';
@@ -91,7 +94,6 @@ class BoatsController extends Controller
             $data['lat']  = 0;
             $data['long'] = 0;
         }
-       
         return view('boats.single', $data);
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Helpers\Common;
 use Twilio\Http\CurlClient;
 use App\Models\Language;
+use App\Models\Photo;
 
 function getLanguages() {
     $languages = [];
@@ -50,17 +51,69 @@ function setDateForDb($value = null)
     return $date;
 }
 
-function s3Url($photo, $property_id = false){
+function s3Url($photo, $photoable_id = false){
     $str = '';
-    if(is_object($photo) && isset($photo->property_id)){
-        $property_id =$photo->property_id;
+    if(is_object($photo) && isset($photo->photoable_id)){
+        $photoable_id = $photo->photoable_id;
+        $photoable_type = $photo->photoable_type;
         $photo = $photo->photo;
+    }else{
+        $cover_photo = Photo::where('photoable_id', $photoable_id)->where('photo', $photo)->first();
+        $photoable_type = $cover_photo['photoable_type'];
     }
+    // $str.= rtrim(env('S3_BUCKET_PATH'), "/");
+    if(env('S3_BUCKET_PATH') == '') {
+        $str = '/storage/';
+    } else {
+        $str= env('S3_BUCKET_PATH');
+    }
+    $str= rtrim($str, "/");
     
-    $str.= rtrim(env('S3_BUCKET_PATH'), "/");
-    $str.='/images/property/'.$property_id;
+    if($photoable_type == 'Boat'){
+        $str.='/images/boat/'.$photoable_id;
+    }else{
+        $str.='/images/property/'.$photoable_id;
+    }
     $str.='/'.$photo;
 
+    return $str;
+}
+
+function s3BoatUrl($photo, $photoable_id = false){
+    $str = '';
+    $cover_photo = Photo::where('photoable_id', $photoable_id)->where('photo', $photo)->first();
+    $photoable_type = $cover_photo['photoable_type'];
+
+    
+    if($photoable_type == 'Boat'){
+        $str.='/images/boat/'.$photoable_id;
+    }else{
+        $str.='/images/property/'.$photoable_id;
+    }
+    $str.='/'.$photo;
+
+    return $str;
+}
+
+function s3PropertyUrl($photo, $s3_path, $photoable_id = false) {
+    $str = '';
+    if(is_object($photo) && isset($photo->photoable_id)){
+        $photoable_id = $photo->photoable_id;
+        $photo = $photo->photo;
+    }
+    if($s3_path != ''){
+        $str= rtrim($s3_path, "/");
+    }else{
+        // $str= rtrim(env('S3_BUCKET_PATH'), "/");
+        if(env('S3_BUCKET_PATH') == '') {
+            $str = '/storage/';
+        } else {
+            $str= env('S3_BUCKET_PATH');
+        }
+        $str= rtrim($str, "/");
+    }
+    $str.='/images/property/'.$photoable_id;
+    $str.='/'.$photo;
     return $str;
 }
 

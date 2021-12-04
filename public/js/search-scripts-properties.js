@@ -1,1 +1,413 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{196:function(e,t,a){e.exports=a(197)},197:function(e,t){var a=[],i=!0,o=APP_URL+"/search/result";$("#price-range").bootstrapSlider(),$("#price-range").on("slideStop",(function(e){e.preventDefault(),e.stopPropagation();var t=$("#price-range").attr("data-value"),a=(t=t.split(","))[0],i=t[1];return $("#minPrice").html(a),$("#maxPrice").html(i),!1})),$("#header-search-form").on("change",(function(){i=!0,deleteMarkers(),o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)})),$("#search-pg-checkin").datepicker({dateFormat:"mm-dd-yy",minDate:0,onSelect:function(e){var t=$("#search-pg-checkin").datepicker("getDate");t.setDate(t.getDate()+1),$("#search-pg-checkout").datepicker("option","minDate",t),setTimeout((function(){$("#search-pg-checkout").datepicker("show")}),20),i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)}}),$("#search-pg-checkout").datepicker({dateFormat:"mm-dd-yy",minDate:1,onClose:function(){if($("#checkin").datepicker("getDate")>=$("#header-search-checkout").datepicker("getDate")){var e=$("#search-pg-checkout").datepicker("option","minDate");$("#search-pg-checkout").datepicker("setDate",e)}},onSelect:function(){i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)}}),$(document.body).on("click",".page-data",(function(e){e.preventDefault();var t=$(this).attr("href");o=t,i=!0,window.getProperties($("#map_view").locationpicker("map").map,t)})),window.addMarker=function(e,t){for(var i,o=new google.maps.InfoWindow,s=0;i=t[s];s++){var n=new google.maps.Marker({position:new google.maps.LatLng(i.latitude,i.longitude),icon:void 0!==i.icon?i.icon:void 0,map:e,title:void 0!==i.title?i.title:void 0,content:void 0!==i.content?i.content:void 0});a.push(n),google.maps.event.addListener(n,"click",(function(t){this.content&&(o.setContent(this.content),o.open(e,this))}))}},window.setMapOnAll=function(e){for(var t=0;t<a.length;t++)a[t].setMap(e)},window.clearMarkers=function(){setMapOnAll(null)},window.deleteMarkers=function(){clearMarkers(),a=[]},window.moneyFormat=function(e,t){return val=e+" "+t,val},window.buildResult=function(e,t,a){$("#page-total").html(t.total),$("#page-from").html(t.from),$("#page-to").html(t.to),i=!1;var o="";if(t.total>0){if(t.current_page>1&&(o+='<li class="page-item"><a class="page-data page-link" href="'+t.prev_page_url+'">Previous</a></li>'),t.current_page)for(var s=1;s<=t.last_page;s++)t.current_page==s?o+='<li class="page-item active"><a  href="'+APP_URL+"/search/result?page="+s+'" class="page-data page-link">'+s+"</a></li>":o+='<li class="page-item"><a  href="'+APP_URL+"/search/result?page="+s+'" class="page-data page-link">'+s+"</a></li>";t.next_page_url&&(o+='<li class="page-item"><a class="page-data page-link" href="'+t.next_page_url+'">Next</a></li>'),$("#pager").html(o),$("#pagination").removeClass("d-none")}else $("#pagination").addClass("d-none");var n=t.data,r=[],l="";for(var c in n)if(n.hasOwnProperty(c)){r[c]={latitude:n[c].property_address.latitude,longitude:n[c].property_address.longitude,title:n[c].name,content:'<a href="'+APP_URL+"/properties/"+n[c].slug+"?checkin="+a.checkin+"&checkout="+a.checkout+"&guests="+a.guest+'" class="media-cover" target="_blank"><img class="map-property-img p-1" src="'+n[c].cover_photo+'"alt="'+n[c].name+'"></a><div class="map-property-name"><div class="col-xs-12 p-1"><div class="location-title"><h5>'+n[c].name+"</h5></div></div></div>"};var d=n[c].avg_rating;reviews_count=0,(1==n[c].reviews_count||n[c].reviews_count>0)&&(reviews_count=n[c].reviews_count);var p=n[c].property_price.currency.symbol,m=n[c].property_price.price,u=moneyFormat(p,m);l+=0==$("#listCol").hasClass("col-md-7")?'<div class="col-md-6 col-lg-3 p-2 pl-4 pr-4 mt-4"><div class="card h-100"><div class="grid"><a href="'+APP_URL+"/properties/"+n[c].slug+"?checkin="+a.checkin+"&checkout="+a.checkout+"&guests="+a.guest+'" target="_blank"><figure class="effect-milo"><img src="'+n[c].cover_photo+'" class="img-fluid rounded " alt="'+n[c].name+'"/><figcaption></figcaption></figure></a></div><div class="card-body p-0 pl-1 pr-1"><div class="d-flex"><div><div class="pl-2 pr-1"><a href="'+APP_URL+"/users/show/"+n[c].host_id+'"><img src="'+n[c].users.profile_src+'" class="img-60x60 rounded-circle" alt="profile-image"></a></div></div><div class="p-2 text"><a class="text-color text-color-hover" href="'+APP_URL+"/properties/"+n[c].slug+"?checkin="+a.checkin+"&checkout="+a.checkout+"&guests="+a.guest+'" target="_blank"><h4 class="text-16 font-weight-700 text">'+n[c].name+'</h4></a><p class="text-13 mt-2 mb-0 text"><i class="fas fa-map-marker-alt"></i> '+n[c].property_address.address_line_1+'</p></div></div><div class="review-0 p-3"><div class="d-flex justify-content-between"><div><span><i class="fa fa-star text-14 secondary-text-color"></i> '+d+" ("+reviews_count+')</span></div><div><span class="font-weight-700 text-18">'+u+'</span> / night</div></div></div><div class="card-footer text-muted p-0 border-0"><div class="d-flex bg-white justify-content-between pl-2 pr-2 pt-2 mb-3"><div><ul class="list-inline"><li class="list-inline-item  pl-4 pr-4 border rounded-3 mt-1 bg-light text-dark"><div class="vtooltip"> <i class="fas fa-user-friends"></i> '+n[c].accommodates+'<span class="vtooltiptext text-14">'+n[c].accommodates+' Guests</span></div></li><li class="list-inline-item pl-4 pr-4 border rounded-3 mt-1 bg-light"><div class="vtooltip"> <i class="fas fa-bed"></i> '+n[c].bedrooms+'<span class="vtooltiptext  text-14">'+n[c].bedrooms+' Bedrooms</span></div></li><li class="list-inline-item pl-4 pr-4 border rounded-3 mt-1 bg-light"><div class="vtooltip"> <i class="fas fa-bath"></i>  '+n[c].bathrooms+'<span class="vtooltiptext  text-14 p-2">'+n[c].bathrooms+" Bathrooms</span></div></li></ul></div></div></div></div></div></div>":'<div class="col-sm-6 col-md-12 col-lg-12  p-0 mb-4"><div class=" row  border p-2 rounded-3"><div class="col-lg-5 p-2"><div class="img-event"><a href="'+APP_URL+"/properties/"+n[c].slug+"?checkin="+a.checkin+"&checkout="+a.checkout+"&guests="+a.guest+'" target="_blank"><img class="img-fluid rounded" src="'+n[c].cover_photo+'" alt="'+n[c].name+'"></a></div></div><div class="col-lg-7 p-2"><div class="row justify-content-between"><div class="col-sm-12 pl-0"><a href="'+APP_URL+"/properties/"+n[c].slug+"?checkin="+a.checkin+"&checkout="+a.checkout+"&guests="+a.guest+'" target="_blank"><p class="mb-0 text-18 text-color font-weight-700 text-color-hover text">'+n[c].name+'</p></a></div></div><div class="review-0 mt-4"><div class="d-flex justify-content-between"><div><span><i class="fa fa-star text-14 secondary-text-color"></i> '+d+" ("+reviews_count+')</span></div><div><span class="font-weight-700 text-20">'+u+'</span> / night</div></div></div><ul class="list-inline mt-2 pb-3"><li class="list-inline-item border rounded-3 p-1 mt-4 pl-3 pr-3"><p class="text-center mb-0"><i class="fas fa-bed text-20 d-none d-sm-inline-block text-muted"></i> '+n[c].accommodates+'<span class=" text-14 font-weight-700"> Guest</span></p></li><li class="list-inline-item  border rounded-3 mt-4 p-1  pl-3 pr-3"><p  class="text-center mb-0" ><i class="fas fa-user-friends d-none d-sm-inline-block text-20 text-muted"></i> '+n[c].bedrooms+'<span class=" text-14 font-weight-700"> Bedrooms</span></p></li><li class="list-inline-item  border rounded-3 mt-4 p-1  pl-3 pr-3"><p  class="text-center mb-0"><i class="fas fa-bath text-20  d-none d-sm-inline-block  text-muted"></i> '+n[c].bathrooms+'<span class="text-14 font-weight-700"> Bathrooms</span></p></li></ul></div></div></div>'}""!=l?$("#properties_show").html(l):$("#properties_show").html(' <div class="text-center justify-content-center w-100 position-center"><img src="http://dev.dint.test/img/not-found.png" class="img-fluid not-found" alt="not-found"><h4 class="text-center text-20 font-weight-700">No Results Found</h4></div>'),window.addMarker(e,r)},window.getProperties=function(e,t){if(o){t=t||"",p=e;var a=p.getZoom(),s=p.getBounds(),n=s.getSouthWest().lat(),r=s.getSouthWest().lng(),l=s.getNorthEast().lat(),c=s.getNorthEast().lng(),d=s.getCenter().lat(),m=s.getCenter().lng(),u=$("#price-range").attr("data-value");u=""!=u?u.split(","):[0,1e3];var g=a+"~"+s+"~"+n+"~"+r+"~"+l+"~"+c+"~"+d+"~"+m,v=$("#location").val(),h=$("#location_city").val();$("#header-search-form").val(v);var f=u[0],w=u[1];$("#minPrice").html(f),$("#maxPrice").html(w);var k=getCheckedValueArray("amenities"),_=getCheckedValueArray("property_type"),b=getCheckedValueArray("book_type"),x=getCheckedValueArray("space_type"),P=$("#map-search-min-beds").val(),y=$("#map-search-min-bathrooms").val(),C=$("#map-search-min-bedrooms").val(),A=$("#startDate").val(),R=$("#endDate").val(),L=$("#front-search-guests").val(),U=o;if("none"!=$("#more_filters").css("display")){var D={location:v,city:h,min_price:f,max_price:w,amenities:k,property_type:_,book_type:b,space_type:x,beds:P,bathrooms:y,bedrooms:C,checkin:A,checkout:R,guest:L,map_details:g};$("#properties_show").html(""),window.show_loader(),axios.post(U,D).then((function(t){window.buildResult(e,t.data,D),window.hide_loader()})).catch((function(e){window.hide_loader(),i=!1,alert("Error while loading search result"),console.log(e)}))}}},$("#btnBook, #btnRoom, #btnPrice, .filter-apply").on("click",(function(){i=!0,deleteMarkers(),o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map),$(".room_filter").addClass("display-off"),$("#more_filters").show(),$(".dropdown-menu-price").removeClass("show")})),window.getCheckedValueArray=function(e){return $('input[name="'+e+'[]"]:checked').map((function(){return this.value})).get().join(",")},$(document.body).on("click","#map_view",(function(){i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)}));var s=function(e){var t=e.addressLine1,a=e.city,i=e.postalCode,o=e.country;$("#location_city").val(a);var s=(null!=t&&""!=t?t+" ":"")+(null!=a&&""!=a?a+" ":"")+(null!=i&&""!=i?i+" ":"")+(null!=o&&""!=o?o+"":"");$("#location").val(s)};$("#map_view").locationpicker({location:{latitude:$("#location_lat").val(),longitude:$("#location_lng").val()},types:["(cities)"],radius:0,zoom:12,addressFormat:"",markerVisible:!1,markerInCenter:!0,inputBinding:{latitudeInput:$("#location_lat"),longitudeInput:$("#location_lng")},enableAutocomplete:!0,draggable:!0,onclick:function(e,t,a){1==i&&window.getProperties($(this).locationpicker("map").map)},onchanged:function(e,t,a){var i=$(this).locationpicker("map").location.addressComponents;s(i)},oninitialized:function(e){var t=$(e).locationpicker("map").location.addressComponents;s(t)}}),$(".slider-selection").trigger("click"),window.show_loader=function(){$("#loader").removeClass("display-off"),$("#pagination").hide()},window.hide_loader=function(){$("#loader").addClass("display-off"),$("#pagination").show()},$("#closeMap").on("click",(function(){$("#listCol").removeClass("col-md-7"),$("#listCol").addClass("col-md-12"),$("#mapCol").addClass("d-none"),$("#showMap").removeClass("d-none"),i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)})),$("#showMap").on("click",(function(){$("#listCol").removeClass("col-md-12"),$("#listCol").addClass("col-md-7"),$("#mapCol").removeClass("d-none"),$("#showMap").addClass("d-none"),i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)})),$((function(){if(document.getElementById("daterange-btn")){var e=$("#startDate").val(),t=$("#endDate").val();window.dateRangeBtn(e,t)}$(".dropdown-menu.filter-dropdown-menu").on("click",(function(e){e.stopPropagation()}))})),$.fn.slider=null,$(window).on("load",(function(){i=!0,o=APP_URL+"/search/result",window.getProperties($("#map_view").locationpicker("map").map)}))}},[[196,0]]]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/search-scripts-properties"],{
+
+/***/ "./resources/js/search-scripts-properties.js":
+/*!***************************************************!*\
+  !*** ./resources/js/search-scripts-properties.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var markers = [];
+var allowRefresh = true;
+var loadPage = APP_URL + '/search/result';
+$("#price-range").bootstrapSlider();
+$("#price-range").on("slideStop", function (slideEvt) {
+  slideEvt.preventDefault();
+  slideEvt.stopPropagation();
+  var range = $('#price-range').attr('data-value');
+  range = range.split(',');
+  var min_price = range[0];
+  var max_price = range[1];
+  $('#minPrice').html(min_price);
+  $('#maxPrice').html(max_price);
+  return false;
+});
+$('#header-search-form').on('change', function () {
+  allowRefresh = true;
+  deleteMarkers();
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+});
+$("#search-pg-checkin").datepicker({
+  dateFormat: "mm-dd-yy",
+  minDate: 0,
+  onSelect: function onSelect(e) {
+    var t = $("#search-pg-checkin").datepicker("getDate");
+    t.setDate(t.getDate() + 1), $("#search-pg-checkout").datepicker("option", "minDate", t), setTimeout(function () {
+      $("#search-pg-checkout").datepicker("show");
+    }, 20);
+    allowRefresh = true;
+    loadPage = APP_URL + '/search/result';
+    window.getProperties($('#map_view').locationpicker('map').map);
+  }
+});
+$("#search-pg-checkout").datepicker({
+  dateFormat: "mm-dd-yy",
+  minDate: 1,
+  onClose: function onClose() {
+    var e = $("#checkin").datepicker("getDate"),
+        t = $("#header-search-checkout").datepicker("getDate");
+
+    if (e >= t) {
+      var a = $("#search-pg-checkout").datepicker("option", "minDate");
+      $("#search-pg-checkout").datepicker("setDate", a);
+    }
+  },
+  onSelect: function onSelect() {
+    allowRefresh = true;
+    loadPage = APP_URL + '/search/result';
+    window.getProperties($('#map_view').locationpicker('map').map);
+  }
+});
+$(document.body).on('click', '.page-data', function (e) {
+  e.preventDefault();
+  var hr = $(this).attr('href');
+  loadPage = hr;
+  allowRefresh = true;
+  window.getProperties($('#map_view').locationpicker('map').map, hr);
+});
+
+window.addMarker = function (map, features) {
+  var infowindow = new google.maps.InfoWindow();
+
+  for (var i = 0, feature; feature = features[i]; i++) {
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(feature.latitude, feature.longitude),
+      icon: feature.icon !== undefined ? feature.icon : undefined,
+      map: map,
+      title: feature.title !== undefined ? feature.title : undefined,
+      content: feature.content !== undefined ? feature.content : undefined
+    });
+    markers.push(marker);
+    google.maps.event.addListener(marker, 'click', function (e) {
+      if (this.content) {
+        infowindow.setContent(this.content);
+        infowindow.open(map, this);
+      }
+    });
+  }
+}; // Sets the map on all markers in the array.
+
+
+window.setMapOnAll = function (map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}; // Removes the markers from the map, but keeps them in the array.
+
+
+window.clearMarkers = function () {
+  setMapOnAll(null);
+}; // Deletes all markers in the array by removing references to them.
+
+
+window.deleteMarkers = function () {
+  clearMarkers();
+  markers = [];
+};
+
+window.moneyFormat = function (symbol, value) {
+  var symbolPosition = 'before';
+
+  if (symbolPosition == "before") {
+    val = symbol + ' ' + value;
+  } else {
+    val = value + ' ' + symbol;
+  }
+
+  return val;
+};
+
+window.buildResult = function (map, result, req) {
+  $('#page-total').html(result.total);
+  $('#page-from').html(result.from);
+  $('#page-to').html(result.to);
+  allowRefresh = false;
+  var pager = '';
+
+  if (result.total > 0) {
+    if (result.current_page > 1) pager += '<li class="page-item"><a class="page-data page-link" href="' + result.prev_page_url + '">Previous</a></li>';
+
+    if (result.current_page) {
+      for (var i = 1; i <= result.last_page; i++) {
+        if (result.current_page == i) {
+          pager += '<li class="page-item active"><a  href="' + APP_URL + '/search/result?page=' + i + '" class="page-data page-link">' + i + '</a></li>';
+        } else {
+          pager += '<li class="page-item"><a  href="' + APP_URL + '/search/result?page=' + i + '" class="page-data page-link">' + i + '</a></li>';
+        }
+      }
+    }
+
+    if (result.next_page_url) pager += '<li class="page-item"><a class="page-data page-link" href="' + result.next_page_url + '">Next</a></li>';
+    $('#pager').html(pager);
+    $('#pagination').removeClass('d-none');
+  } else {
+    $('#pagination').addClass('d-none');
+  }
+
+  var properties = result.data;
+  var room_point = [];
+  var room_div = "";
+
+  for (var key in properties) {
+    if (properties.hasOwnProperty(key)) {
+      room_point[key] = {
+        latitude: properties[key].property_address.latitude,
+        longitude: properties[key].property_address.longitude,
+        title: properties[key].name,
+        content: '<a href="' + APP_URL + '/properties/' + properties[key].slug + '?checkin=' + req.checkin + '&checkout=' + req.checkout + '&guests=' + req.guest + '" class="media-cover" target="_blank">' + '<img class="map-property-img p-1" src="' + properties[key].cover_photo + '"alt="' + properties[key].name + '">' + '</a>' + '<div class="map-property-name">' + '<div class="col-xs-12 p-1">' + '<div class="location-title"><h5>' + properties[key].name + '</h5></div>' + '</div>' + '</div>'
+      };
+      var avg_rating = properties[key].avg_rating;
+      reviews_count = 0;
+      if (properties[key].reviews_count == 1) reviews_count = properties[key].reviews_count;else if (properties[key].reviews_count > 0) reviews_count = properties[key].reviews_count;
+      var moneySymbol = properties[key].property_price.currency.symbol;
+      var price = properties[key].property_price.price;
+      var symbolWithPrice = moneyFormat(moneySymbol, price);
+      var colDiv = 'col-md-6 col-lg-4 p-2';
+      var divCol = $('#listCol').hasClass('col-md-7');
+
+      if (divCol == false) {
+        room_div += '<div class="col-md-6 col-lg-3 p-2 pl-4 pr-4 mt-4">' + '<div class="card h-100">' + '<div class="grid">' + '<a href="' + APP_URL + '/properties/' + properties[key].slug + '?checkin=' + req.checkin + '&checkout=' + req.checkout + '&guests=' + req.guest + '" target="_blank">' + '<figure class="effect-milo">' + '<img src="' + properties[key].cover_photo + '" class="img-fluid rounded " alt="' + properties[key].name + '"/>' + '<figcaption>' + '</figcaption>' + '</figure>' + '</a>' + '</div>' + '<div class="card-body p-0 pl-1 pr-1">' + '<div class="d-flex">' + '<div>' + '<div class="pl-2 pr-1">' + '<a href="' + APP_URL + '/users/show/' + properties[key].host_id + '"><img src="' + properties[key].users.profile_src + '" class="img-60x60 rounded-circle" alt="profile-image"></a>' + '</div>' + '</div>' + '<div class="p-2 text">' + '<a class="text-color text-color-hover" href="' + APP_URL + '/properties/' + properties[key].slug + '?checkin=' + req.checkin + '&checkout=' + req.checkout + '&guests=' + req.guest + '" target="_blank">' + '<h4 class="text-16 font-weight-700 text">' + properties[key].name + '</h4>' + '</a>' + '<p class="text-13 mt-2 mb-0 text"><i class="fas fa-map-marker-alt"></i> ' + properties[key].property_address.address_line_1 + '</p>' + '</div>' + '</div>' + '<div class="review-0 p-3">' + '<div class="d-flex justify-content-between">' + '<div>' + '<span><i class="fa fa-star text-14 secondary-text-color"></i>' + ' ' + avg_rating + ' ' + '(' + reviews_count + ')</span>' + '</div>' + '<div>' + '<span class="font-weight-700 text-18">' + symbolWithPrice + '</span> / night' + '</div>' + '</div>' + '</div>' + '<div class="card-footer text-muted p-0 border-0">' + '<div class="d-flex bg-white justify-content-between pl-2 pr-2 pt-2 mb-3">' + '<div>' + '<ul class="list-inline">' + '<li class="list-inline-item  pl-4 pr-4 border rounded-3 mt-1 bg-light text-dark">' + '<div class="vtooltip"> <i class="fas fa-user-friends"></i> ' + properties[key].accommodates + '' + '<span class="vtooltiptext text-14">' + properties[key].accommodates + ' Guests</span>' + '</div>' + '</li>' + '<li class="list-inline-item pl-4 pr-4 border rounded-3 mt-1 bg-light">' + '<div class="vtooltip"> <i class="fas fa-bed"></i> ' + properties[key].bedrooms + '' + '<span class="vtooltiptext  text-14">' + properties[key].bedrooms + ' Bedrooms</span>' + '</div>' + '</li>' + '<li class="list-inline-item pl-4 pr-4 border rounded-3 mt-1 bg-light">' + '<div class="vtooltip"> <i class="fas fa-bath"></i> ' + ' ' + properties[key].bathrooms + '' + '<span class="vtooltiptext  text-14 p-2">' + properties[key].bathrooms + ' Bathrooms</span>' + '</div>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</div>' + '</div>' + '</div>' + '</div>';
+      } else {
+        room_div += '<div class="col-sm-6 col-md-12 col-lg-12  p-0 mb-4">' + '<div class=" row  border p-2 rounded-3">' + '<div class="col-lg-5 p-2">' + '<div class="img-event">' + '<a href="' + APP_URL + '/properties/' + properties[key].slug + '?checkin=' + req.checkin + '&checkout=' + req.checkout + '&guests=' + req.guest + '" target="_blank">' + '<img class="img-fluid rounded" src="' + properties[key].cover_photo + '" alt="' + properties[key].name + '">' + '</a>' + '</div>' + '</div>' + '<div class="col-lg-7 p-2">' + '<div class="row justify-content-between">' + '<div class="col-sm-12 pl-0">' + '<a href="' + APP_URL + '/properties/' + properties[key].slug + '?checkin=' + req.checkin + '&checkout=' + req.checkout + '&guests=' + req.guest + '" target="_blank">' + '<p class="mb-0 text-18 text-color font-weight-700 text-color-hover text">' + properties[key].name + '</p>' + '</a>' + '</div>' + '</div>' + '<div class="review-0 mt-4">' + '<div class="d-flex justify-content-between">' + '<div>' + '<span><i class="fa fa-star text-14 secondary-text-color"></i>' + ' ' + avg_rating + ' ' + '(' + reviews_count + ')</span>' + '</div>' + '<div>' + '<span class="font-weight-700 text-20">' + symbolWithPrice + '</span> / night' + '</div>' + '</div>' + '</div>' + '<ul class="list-inline mt-2 pb-3">' + '<li class="list-inline-item border rounded-3 p-1 mt-4 pl-3 pr-3">' + '<p class="text-center mb-0">' + '<i class="fas fa-bed text-20 d-none d-sm-inline-block text-muted"></i> ' + properties[key].accommodates + '<span class=" text-14 font-weight-700"> Guest</span>' + '</p>' + '</li>' + '<li class="list-inline-item  border rounded-3 mt-4 p-1  pl-3 pr-3">' + '<p  class="text-center mb-0" >' + '<i class="fas fa-user-friends d-none d-sm-inline-block text-20 text-muted"></i> ' + properties[key].bedrooms + '<span class=" text-14 font-weight-700"> Bedrooms</span>' + '</p>' + '</li>' + '<li class="list-inline-item  border rounded-3 mt-4 p-1  pl-3 pr-3">' + '<p  class="text-center mb-0">' + '<i class="fas fa-bath text-20  d-none d-sm-inline-block  text-muted"></i> ' + properties[key].bathrooms + '<span class="text-14 font-weight-700"> Bathrooms</span>' + '</p>' + '</li>' + '</ul>' + '</div>' + '</div>' + '</div>';
+      }
+    }
+  }
+
+  if (room_div != '') $('#properties_show').html(room_div);else $('#properties_show').html(' <div class="text-center justify-content-center w-100 position-center"><img src="http://dev.dint.test/img/not-found.png" class="img-fluid not-found" alt="not-found"><h4 class="text-center text-20 font-weight-700">No Results Found</h4></div>'); //deleteMarkers();
+
+  window.addMarker(map, room_point);
+};
+
+window.getProperties = function (map, url) {
+  if (loadPage) {
+    url = url || '';
+    p = map;
+    var a = p.getZoom(),
+        t = p.getBounds(),
+        o = t.getSouthWest().lat(),
+        i = t.getSouthWest().lng(),
+        s = t.getNorthEast().lat(),
+        r = t.getNorthEast().lng(),
+        l = t.getCenter().lat(),
+        n = t.getCenter().lng();
+    var range = $('#price-range').attr('data-value');
+
+    if (range != '') {
+      range = range.split(',');
+    } else {
+      range = [0, 1000];
+    }
+
+    var map_details = a + "~" + t + "~" + o + "~" + i + "~" + s + "~" + r + "~" + l + "~" + n;
+    var location = $('#location').val();
+    var city = $('#location_city').val(); //Input Search value set
+
+    $('#header-search-form').val(location); //Input Search value set
+
+    var min_price = range[0];
+    var max_price = range[1];
+    $('#minPrice').html(min_price);
+    $('#maxPrice').html(max_price);
+    var amenities = getCheckedValueArray('amenities');
+    var property_type = getCheckedValueArray('property_type');
+    var book_type = getCheckedValueArray('book_type');
+    var space_type = getCheckedValueArray('space_type');
+    var beds = $('#map-search-min-beds').val();
+    var bathrooms = $('#map-search-min-bathrooms').val();
+    var bedrooms = $('#map-search-min-bedrooms').val();
+    var checkin = $('#startDate').val();
+    var checkout = $('#endDate').val();
+    var guest = $('#front-search-guests').val(); //var map_details = map_details;
+
+    var dataURL = loadPage; // if(url != '') dataURL = url;
+
+    if ($('#more_filters').css('display') != 'none') {
+      var req = {
+        'location': location,
+        'city': city,
+        'min_price': min_price,
+        'max_price': max_price,
+        'amenities': amenities,
+        'property_type': property_type,
+        'book_type': book_type,
+        'space_type': space_type,
+        'beds': beds,
+        'bathrooms': bathrooms,
+        'bedrooms': bedrooms,
+        'checkin': checkin,
+        'checkout': checkout,
+        'guest': guest,
+        'map_details': map_details
+      };
+      $('#properties_show').html("");
+      window.show_loader();
+      axios.post(dataURL, req).then(function (resp) {
+        window.buildResult(map, resp.data, req);
+        window.hide_loader();
+      })["catch"](function (err) {
+        window.hide_loader();
+        allowRefresh = false;
+        alert('Error while loading search result'); // This callback function will trigger on unsuccessful action
+
+        console.log(err);
+      });
+      /*
+      $.ajax({
+          url: dataURL,
+          data: req,
+          type: 'post',
+          dataType: 'json',
+          beforeSend: function () {
+              $('#properties_show').html("");
+              show_loader();
+          },
+          success: function (result) {
+            },
+          error: function (request, error) {
+              allowRefresh = false;
+              // This callback function will trigger on unsuccessful action
+              console.log(error);
+          },
+          complete: function () {
+              window.hide_loader();
+          }
+      });
+      */
+    }
+  }
+};
+
+$('#btnBook, #btnRoom, #btnPrice, .filter-apply').on('click', function () {
+  allowRefresh = true;
+  deleteMarkers();
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+  $('.room_filter').addClass('display-off');
+  $('#more_filters').show();
+  $('.dropdown-menu-price').removeClass('show');
+});
+
+window.getCheckedValueArray = function (field_name) {
+  var array_Value = '';
+  array_Value = $('input[name="' + field_name + '[]"]:checked').map(function () {
+    return this.value;
+  }).get().join(',');
+  return array_Value;
+};
+
+$(document.body).on('click', '#map_view', function () {
+  allowRefresh = true;
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+});
+
+var addressUpdated = function addressUpdated(addressComponents) {
+  var street = addressComponents.addressLine1;
+  var city = addressComponents.city;
+  var state = addressComponents.postalCode;
+  var country = addressComponents.country;
+  $('#location_city').val(city);
+  var completeAddress = (street != null && street != "" ? street + " " : "") + (city != null && city != "" ? city + " " : "") + (state != null && state != "" ? state + " " : "") + (country != null && country != "" ? country + "" : "");
+  $('#location').val(completeAddress);
+};
+
+$('#map_view').locationpicker({
+  location: {
+    latitude: $('#location_lat').val(),
+    longitude: $('#location_lng').val()
+  },
+  types: ['(cities)'],
+  radius: 0,
+  zoom: 12,
+  addressFormat: "",
+  markerVisible: false,
+  markerInCenter: true,
+  inputBinding: {
+    latitudeInput: $('#location_lat'),
+    longitudeInput: $('#location_lng') //locationNameInput: $('#front-search-field')
+
+  },
+  enableAutocomplete: true,
+  draggable: true,
+  onclick: function onclick(currentLocation, radius, isMarkerDropped) {
+    if (allowRefresh == true) {
+      window.getProperties($(this).locationpicker('map').map);
+    }
+  },
+  onchanged: function onchanged(currentLocation, radius, isMarkerDropped) {
+    var addressComponents = $(this).locationpicker('map').location.addressComponents;
+    addressUpdated(addressComponents);
+  },
+  oninitialized: function oninitialized(component) {
+    var addressComponents = $(component).locationpicker('map').location.addressComponents;
+    addressUpdated(addressComponents);
+  }
+});
+$('.slider-selection').trigger('click');
+
+window.show_loader = function () {
+  $('#loader').removeClass('display-off');
+  $('#pagination').hide();
+};
+
+window.hide_loader = function () {
+  $('#loader').addClass('display-off');
+  $('#pagination').show();
+}; // Map Close
+
+
+$('#closeMap').on('click', function () {
+  $('#listCol').removeClass('col-md-7');
+  $('#listCol').addClass('col-md-12');
+  $('#mapCol').addClass('d-none');
+  $('#showMap').removeClass('d-none');
+  allowRefresh = true;
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+}); // Map show
+
+$('#showMap').on('click', function () {
+  $('#listCol').removeClass('col-md-12');
+  $('#listCol').addClass('col-md-7');
+  $('#mapCol').removeClass('d-none');
+  $('#showMap').addClass('d-none');
+  allowRefresh = true;
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+});
+$(function () {
+  if (document.getElementById('daterange-btn')) {
+    var checkin = $('#startDate').val();
+    var checkout = $('#endDate').val();
+    window.dateRangeBtn(checkin, checkout);
+  }
+
+  $('.dropdown-menu.filter-dropdown-menu').on('click', function (event) {
+    // The event won't be propagated up to the document NODE and 
+    // therefore delegated events won't be fired
+    event.stopPropagation();
+  });
+});
+$.fn.slider = null;
+$(window).on("load", function () {
+  allowRefresh = true;
+  loadPage = APP_URL + '/search/result';
+  window.getProperties($('#map_view').locationpicker('map').map);
+});
+
+/***/ }),
+
+/***/ 1:
+/*!*********************************************************!*\
+  !*** multi ./resources/js/search-scripts-properties.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! E:\works\dint\resources\js\search-scripts-properties.js */"./resources/js/search-scripts-properties.js");
+
+
+/***/ })
+
+},[[1,"/js/manifest"]]]);

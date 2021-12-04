@@ -779,7 +779,7 @@
                                     title: properties[key].name,
                                 
                                     content: '<a href="'+APP_URL+'/properties/'+properties[key].slug+'?checkin='+checkin+'&checkout='+checkout+'&guests='+guest+'" class="media-cover" target="_blank">'
-                                    +'<img class="map-property-img p-1" src="'+properties[key].cover_photo+'"alt="'+properties[key].name+'">'
+                                    +'<img class="map-property-img p-1" src="'+s3Url(properties[key].cover_photo, properties[key].id)+'"alt="'+properties[key].name+'">'
                                     +'</a>'
                                     +'<div class="map-property-name">'
                                         +'<div class="col-xs-12 p-1">'
@@ -805,7 +805,7 @@
                                                         +'<div class="grid">'
                                                             +'<a href="'+APP_URL+'/properties/'+properties[key].slug+'?checkin='+checkin+'&checkout='+checkout+'&guests='+guest+'" target="_blank">'
                                                             +'<figure class="effect-milo">'
-                                                                +'<img src="'+properties[key].cover_photo+'" class="img-fluid rounded " alt="'+properties[key].name+'"/>'
+                                                                +'<img src="'+s3Url(properties[key].cover_photo, properties[key].id)+'" class="img-fluid rounded " alt="'+properties[key].name+'"/>'
                                                                 +'<figcaption>'
                                                                 +'</figcaption>'     
                                                             +'</figure>'        
@@ -874,7 +874,7 @@
                                                         +'<div class="col-lg-5 p-2">'
                                                             +'<div class="img-event">'
                                                                 +'<a href="'+APP_URL+'/properties/'+properties[key].slug+'?checkin='+checkin+'&checkout='+checkout+'&guests='+guest+'" target="_blank">'
-                                                                    +'<img class="img-fluid rounded" src="'+properties[key].cover_photo+'" alt="'+properties[key].name+'">'
+                                                                    +'<img class="img-fluid rounded" src="'+s3Url(properties[key].cover_photo, properties[key].id)+'" alt="'+properties[key].name+'">'
                                                                 +'</a>' 
                                                             +'</div>'
                                                         +'</div>'

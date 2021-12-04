@@ -41,7 +41,8 @@ use App\Models\{
     AmenityType,
     User,
     Settings,
-    Bookings
+    Bookings,
+    Photo
 };
 
 class PropertiesController extends Controller
@@ -125,14 +126,14 @@ class PropertiesController extends Controller
     public function reloadImages(Request $request){
         $property = Properties::find($request->property_id);
 
-        $photos = PropertyPhotos::where('property_id', $request->property_id)->orderBy('serial', 'asc')->get();
+        $photos = Photo::where('photoable_type', '=', $request->photoable_type)->where('photoable_id', '=', $request->property_id)->orderBy('serial', 'asc')->get();
+        
         $view = view("admin.listing.photos_selectable", ['result'=>$property, 'photos'=>$photos])->render();
 
         return response()->json(['success'=>$photos, 'html'=>$view]);
     }
 
     public function photoUpload(Request $request){
-        $property = Properties::find($request->id);
         $one_photo = $request->file('file');
 
         $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
@@ -141,7 +142,7 @@ class PropertiesController extends Controller
 
         $name = time().'_'.$name; 
 
-        $path = 'images/property/'.$property->id;
+        $path = 'images/property/'.$request->property_id;
                         
         $image = Image::make($one_photo);
         $height = $image->height();
@@ -168,41 +169,37 @@ class PropertiesController extends Controller
 
         $image->fit($applicable_width, $applicable_height)->encode($extension, 40);
 
-        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
-        $path = Storage::put($path."/".$name, $image->stream(), 'public');
-
-        $photo_exist_first   = PropertyPhotos::where('property_id', $property->id)->count();
+        $photo_exist_first   = Photo::where('photoable_id', $request->property_id)->where('photoable_type', $request->photoable_type)->count();
                    
         if ($photo_exist_first!=0) {
-            $photo_exist         = PropertyPhotos::orderBy('serial', 'desc')->where('property_id', $property->id)->take(1)->first();
+            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->property_id)->where('photoable_type', $request->photoable_type)->take(1)->first();
         }
-        $photos                = new PropertyPhotos;
-        $photos->property_id   = $property->id;
-        $photos->photo         = $name;
+
+        $photo = new Photo();
+        $photo->photoable_type   = $request->photoable_type;
+        $photo->photoable_id   = $request->property_id;
+        $photo->photo         = $name;
         if ($photo_exist_first != 0) {
-            $photos->serial = $photo_exist->serial+1;
+            $photo->serial = $photo_exist->serial+1;
         } else {
-            $photos->serial = $photo_exist_first+1;
+            $photo->serial = $photo_exist_first+1;
         }
 
         if (!$photo_exist_first) {
-            $photos->cover_photo     = 1;
+            $photo->cover_photo     = 1;
         }
-        
-        $photos->save();
+        $photo->save();
 
-        $property_steps = PropertySteps::where('property_id', $property->id)->first();
-        $property_steps->photos = 1;
-        $property_steps->save();
+        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
 
-        $properties               = Properties::find($property->id);
-        $properties->status       = (count($properties->property_photos) >=4) ?  'Listed' : 'Unlisted';
+        $photoCount = Photo::where('photoable_id', $request->property_id)->where('photoable_type', $request->photoable_type)->count();
+        $properties               = Properties::find($request->property_id);
+        $properties->status       = ($photoCount >= 4) ?  'Listed' : 'Unlisted';
         $properties->save();
 
-
-        return response()->json(['success'=>$photos]);
-
-
+        $photos = Photo::where('photoable_type', '=', $request->photoable_type)->where('photoable_id', '=', $request->property_id)->get();
+        return response()->json(['success' => $photos]);
     }
 
     public function listing(Request $request, CalendarController $calendar)
@@ -229,7 +226,7 @@ class PropertiesController extends Controller
                 $property->save();
 
                 $property_steps = PropertySteps::where('property_id', $property_id)->first();
-           $property_steps->basics = 1;
+                $property_steps->basics = 1;
                 $property_steps->save();
                 return redirect('admin/listing/'.$property_id.'/description');
             }
@@ -412,13 +409,14 @@ class PropertiesController extends Controller
                         }
                         $image->fit($applicable_width, $applicable_height)->save($path."/".$name);
 
-                        $photo_exist_first   = PropertyPhotos::where('property_id', $property_id)->count();
+                        $photo_exist_first   = Photo::where('photoable_id', $property_id)->where('photoable_type', 'Property')->count();
                                    
                         if ($photo_exist_first!=0) {
-                            $photo_exist         = PropertyPhotos::orderBy('serial', 'desc')->where('property_id', $property_id)->take(1)->first();
+                            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $property_id)->where('photoable_type', 'Property')->take(1)->first();
                         }
-                        $photos                = new PropertyPhotos;
-                        $photos->property_id   = $property_id;
+                        $photos                = new Photo;
+                        $photos->photoable_id   = $property_id;
+                        $photos->photoable_type   = 'Property';
                         $photos->photo         = $name;
                         if ($photo_exist_first != 0) {
                             $photos->serial = $photo_exist->serial+1;
@@ -492,7 +490,8 @@ class PropertiesController extends Controller
                     return redirect('admin/listing/'.$property_id.'/photos')->with('success', 'File Uploaded Successfully!');
                 }
             }
-            $data['photos']    = PropertyPhotos::where('property_id', $property_id)
+            $data['photos']    = Photo::where('photoable_id', $property_id)
+                                ->where('photoable_type', 'Property')
                                 ->orderBy('serial', 'asc')
                                 ->get();
         } else if ($step == 'pricing') {
@@ -616,7 +615,7 @@ class PropertiesController extends Controller
     public function photoMessage(Request $request)
     {
            $property = Properties::find($request->id);
-            $photos  = PropertyPhotos::find($request->photo_id);
+            $photos  = Photo::find($request->photo_id);
             $photos->message = $request->messages;
             $photos->save();
         
@@ -627,7 +626,7 @@ class PropertiesController extends Controller
     {
       
             $property = Properties::find($request->id);
-            $photos   = PropertyPhotos::find($request->photo_id);
+            $photos   = Photo::find($request->photo_id);
             $photos->delete(); 
         
             $property               = Properties::find($request->id);
@@ -641,10 +640,10 @@ class PropertiesController extends Controller
     {
 
         if ($request->option_value == 'Yes') {
-            PropertyPhotos::where('property_id', '=', $request->property_id)
+            Photo::where('photoable_id', '=', $request->property_id)->where('photoable_type', $request->photoable_type)
             ->update(['cover_photo' => 0]);
 
-            $photos = PropertyPhotos::find($request->photo_id);
+            $photos = Photo::find($request->photo_id);
             $photos->cover_photo = 1;
             $photos->save();
         }
@@ -654,7 +653,7 @@ class PropertiesController extends Controller
     public function makePhotoSerial(Request $request)
     {
        
-        $photos         = PropertyPhotos::find($request->id);
+        $photos         = Photo::find($request->id);
         $photos->serial = $request->serial;
         $photos->save();
 
