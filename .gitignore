@@ -14,3 +14,7 @@ yarn-error.log
 /.vscode
 /vendor
 **/.DS_Store
+=======
+# Irrelevant macos files
+.DS_Store
+
