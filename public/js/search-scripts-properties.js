@@ -263,7 +263,7 @@ window.getProperties = function (map, url) {
               show_loader();
           },
           success: function (result) {
-            },
+           },
           error: function (request, error) {
               allowRefresh = false;
               // This callback function will trigger on unsuccessful action
@@ -405,7 +405,7 @@ $(window).on("load", function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\works\dint\resources\js\search-scripts-properties.js */"./resources/js/search-scripts-properties.js");
+module.exports = __webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/dint/resources/js/search-scripts-properties.js */"./resources/js/search-scripts-properties.js");
 
 
 /***/ })

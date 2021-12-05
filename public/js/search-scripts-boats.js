@@ -329,7 +329,7 @@ function getBoats(map, url) {
           type: 'post',
           dataType: 'json',
           beforeSend: function () {
-            },
+           },
           success: function (result) {
               
           },
@@ -517,7 +517,7 @@ var searchBoat = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\works\dint\resources\js\search-scripts-boats.js */"./resources/js/search-scripts-boats.js");
+module.exports = __webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/dint/resources/js/search-scripts-boats.js */"./resources/js/search-scripts-boats.js");
 
 
 /***/ })
