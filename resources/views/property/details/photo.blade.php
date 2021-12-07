@@ -167,14 +167,13 @@ box-shadow: inset 0px 0px 0px 0.25em black;
         {  
             url: "{{ url('listing/'.$property->id.'/photo-upload') }}",
             sending: function(file, xhr, formData) {
-                formData.append("photoable_type", "Property");  //name and value
                 formData.append("property_id", propertyID); //name and value
             },
         });
         myDropzone.on("queuecomplete", function(file, res) {
             $.ajax({
                 url: '/listing/<?php echo $property->id;?>/photo-selectables',
-                data: {'property_id':<?php echo $property->id;?>, 'photoable_type': 'Property', '_token': '{{ csrf_token() }}'},
+                data: {'property_id':<?php echo $property->id;?>, '_token': '{{ csrf_token() }}'},
                 type: 'post',
                 dataType: 'json',
                 success: function (result) {
@@ -250,13 +249,12 @@ box-shadow: inset 0px 0px 0px 0.25em black;
         $(document).on('change', '#photoId', function(ev){
             var dataURL      = '{{url("listing/photo/make_default_photo")}}';
             var option_value = $(this).val();
-            var photoable_type = 'Property';
             var photo_id     = $('option:selected', this).attr('image_id');
             var property_id  = $('option:selected', this).attr('property_id'); 
             page_loader_start();
             $.ajax({
                 url: dataURL,
-                data: {'photo_id':photo_id, 'property_id':property_id, 'photoable_type':photoable_type,'option_value':option_value, '_token': '{{ csrf_token() }}'},
+                data: {'photo_id':photo_id, 'property_id':property_id, 'option_value':option_value, '_token': '{{ csrf_token() }}'},
                 type: 'post',
                 dataType: 'json',
                 success: function (result) {

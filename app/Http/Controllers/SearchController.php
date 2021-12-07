@@ -223,14 +223,14 @@ class SearchController extends Controller
 
         $max_price_check = $this->helper->convert_currency('', 'USD', $max_price);
 
-        $properties = Properties::with(['address' => function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
+        $properties = Properties::with(['property_address' => function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
         },
                             'property_description',
                             'property_price' => function ($query) use ($min_price, $max_price) {
                                 $query->with('currency');
                             },
                             'users'])
-                            ->whereHas('address', function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
+                            ->whereHas('property_address', function ($query) use ($minLat, $maxLat, $minLong, $maxLong) {
                                  $query->whereRaw("latitude between $minLat and $maxLat and longitude between $minLong and $maxLong");
                             })
                             ->whereHas('property_price', function ($query) use ($min_price, $max_price, $currency_rate, $max_price_check) {
@@ -413,8 +413,9 @@ class SearchController extends Controller
         } else {
             $boatIds = array();
         }
-        $boats = Boat::whereHas('address', function($query) use ($city) {
-            $query->where('city', 'like', '%' . $city . '%');
+        
+        $boats = Boat::whereHas('address', function($query) use ($location) {
+            $query->where('city', 'like', '%' . $location . '%');
         });
         if (!empty($boatIds)) {
             $boats = $boats->whereNotIn('id', $boatIds);

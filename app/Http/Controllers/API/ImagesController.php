@@ -53,7 +53,7 @@ class ImagesController extends Controller
 
     public function get(Request $request, $type, $id){
         $type = ucwords(strtolower($type));
-        $images = $this->photo->where('photoable_type', '=', $type)->where('photoable_id', '=', $id)->get();
+        $images = $this->photo->where('photoable_type', '=', 'App\Models\Boat')->where('photoable_id', '=', $id)->get();
         $images = $images->map(function($img) {
             $img->s3url = s3BoatUrl($img->photo, $img->photoable_id);
             return $img;

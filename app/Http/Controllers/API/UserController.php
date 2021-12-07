@@ -114,7 +114,8 @@ class UserController extends Controller
         $one_photo = $request->file('file');
 
         $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
-                                    
+        $name = replaceBracket($name);
+                              
         $ext = pathinfo($name, PATHINFO_EXTENSION);
 
         $name         = 'profile_'.time().'.'.$ext; 

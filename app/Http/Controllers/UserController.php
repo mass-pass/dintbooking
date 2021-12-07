@@ -261,7 +261,8 @@ class UserController extends Controller
         $one_photo = $request->file('file');
 
         $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
-                                    
+        $name = replaceBracket($name);
+                    
         $ext = pathinfo($name, PATHINFO_EXTENSION);
 
         $name         = 'profile_'.time().'.'.$ext; 
@@ -284,8 +285,8 @@ class UserController extends Controller
         $image->fit($width, $height)->encode($ext, 40);
 
         //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
-        $path = Storage::put($path."/".$name, $image->stream(), 'public');
-
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
+        
         $user->addImage($name);
         $user->profile_image  = $name;
         $user->save();
@@ -442,7 +443,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         $data['properties'] = Properties::where('status', 'listed')
-                        ->with('users','property_price', 'property_address')
+                        ->with('users','property_price')
                         ->where('host_id', $request->id)
                         ->take(4)
                         ->get();           
