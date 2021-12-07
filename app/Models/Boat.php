@@ -38,7 +38,7 @@ class Boat extends Model
 
     public function getCoverPhotoAttribute()
     {
-        $cover = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'Boat')->where('cover_photo', 1)->first();
+        $cover = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'App\Models\Boat')->where('cover_photo', 1)->first();
         if (isset($cover->photo)) {
             $url = s3Url($cover->photo, $this->attributes['id']);
         } else {
@@ -51,10 +51,17 @@ class Boat extends Model
     {
         return $this->hasMany('App\Models\Reviews', 'property_id', 'id');
     }
+
+    // public function photo()
+    // {
+    //     return $this->hasMany('App\Models\Photo', 'photoable_id', 'id');
+    // }
+
     public function photo()
     {
-        return $this->hasMany('App\Models\Photo', 'photoable_id', 'id');
+        return $this->morphMany(Photo::class, 'photoable');
     }
+
     public function address()
     {
         return $this->morphOne(Address::class, 'addressable');

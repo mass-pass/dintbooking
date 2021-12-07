@@ -205,7 +205,7 @@ class PropertyDetailController extends Controller
     {
         $title = 'Photo';
         $property = Properties::findOrFail($id);
-        $property_photo = Photo::where('photoable_type','Property')->where('photoable_id', $id)->get();
+        $property_photo = $property->photo;
         Gate::authorize('update-property', $property);
         if ($request->isMethod('post')) {
             //Perform insertion

@@ -59,7 +59,7 @@ class Properties extends Model
 
     public function getPropertyPhotoAttribute()
     {
-        $result = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'Property')->first();
+        $result = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'App\Models\Properties')->first();
         return (isset($result->photo) ? $result->photo : '') ;
     }
 
@@ -157,14 +157,19 @@ class Properties extends Model
         return $this->belongsTo('App\Models\PropertyType', 'property_type', 'id');
     }
 
-    // public function property_address()
-    // {
-    //     return $this->morphOne(Address::class, 'addressable');
-    // }
+    public function property_address()
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
 
     public function address()
     {
         return $this->morphOne(Address::class, 'addressable');
+    }
+
+    public function photo()
+    {
+        return $this->morphMany(Photo::class, 'photoable');
     }
 
     public function property_beds()
@@ -227,7 +232,7 @@ class Properties extends Model
 
     public function getCoverPhotoAttribute()
     {
-        $cover = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'Property')->where('cover_photo', 1)->first();
+        $cover = Photo::where('photoable_id', $this->attributes['id'])->where('photoable_type', 'App\Models\Properties')->where('cover_photo', 1)->first();
         if (isset($cover->photo)) {
             $url = s3Url($cover->photo, $this->attributes['id']);
         } else {

@@ -66,7 +66,8 @@ class PartnerController extends Controller
         $one_photo = $request->file('file');
 
         $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
-                                    
+        $name = replaceBracket($name);
+              
         $extension = pathinfo($name, PATHINFO_EXTENSION);
 
         $name = time().'_'.$name; 
@@ -98,30 +99,35 @@ class PartnerController extends Controller
 
         $image->fit($applicable_width, $applicable_height)->encode($extension, 40);
 
-        $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->count();
+        $boat = Boat::find($request->photoable_id);
+        $chk_photo = $boat->photo;
+
+        if($chk_photo != ''){
+            $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->count();
                    
-        if ($photo_exist_first!=0) {
-            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->take(1)->first();
+            if ($photo_exist_first!=0) {
+                $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->take(1)->first();
+            }
+        }else{
+            $photo_exist_first = 0;
+            $photo_exist = 0;
         }
-
-        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
-        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
-
+ 
         $photo = new Photo();
-        $photo->photoable_type   = $request->photoable_type;
-        $photo->photoable_id   = $request->photoable_id;
         $photo->photo         = $name;
         if ($photo_exist_first != 0) {
             $photo->serial = $photo_exist->serial+1;
         } else {
             $photo->serial = $photo_exist_first+1;
         }
-
         if (!$photo_exist_first) {
             $photo->cover_photo     = 1;
         }
-        $photo->save();
+        $boat->photo()->save($photo);
 
+        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
+        
         return response()->json(['success'=>$photo."/".$name]);
     }
 
@@ -129,7 +135,8 @@ class PartnerController extends Controller
         $one_file = $request->file('file');
 
         $name = str_replace(' ', '_', $one_file->getClientOriginalName());
-                                    
+        $name = replaceBracket($name);
+
         $name = time().'_'.$name; 
 
         $path = 'files/'.date('Ymd');
@@ -195,7 +202,7 @@ class PartnerController extends Controller
          $one_photo = $request->file('file');
 
         $name = str_replace(' ', '_', $one_photo->getClientOriginalName());
-                                    
+        $name = replaceBracket($name);
         $extension = pathinfo($name, PATHINFO_EXTENSION);
 
         $name = time().'_'.$name; 
@@ -227,29 +234,34 @@ class PartnerController extends Controller
 
         $image->fit($applicable_width, $applicable_height)->encode($extension, 40);
 
-        $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->count();
+        $boat = Boat::find($request->photoable_id);
+        $chk_photo = $boat->photo;
+
+        if($chk_photo != ''){
+            $photo_exist_first   = Photo::where('photoable_id', $request->photoable_id)->count();
                    
-        if ($photo_exist_first!=0) {
-            $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->where('photoable_type', $request->photoable_type)->take(1)->first();
+            if ($photo_exist_first!=0) {
+                $photo_exist         = Photo::orderBy('serial', 'desc')->where('photoable_id', $request->photoable_id)->take(1)->first();
+            }
+        }else{
+            $photo_exist_first = 0;
+            $photo_exist = 0;
         }
-
-        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
-        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
-
+ 
         $photo = new Photo();
-        $photo->photoable_type   = $request->photoable_type;
-        $photo->photoable_id   = $request->photoable_id;
         $photo->photo         = $name;
         if ($photo_exist_first != 0) {
             $photo->serial = $photo_exist->serial+1;
         } else {
             $photo->serial = $photo_exist_first+1;
         }
-
         if (!$photo_exist_first) {
             $photo->cover_photo     = 1;
         }
-        $photo->save();
+        $boat->photo()->save($photo);
+
+        //$path = Storage::disk('s3')->put($path."/".$name, $image->stream(), 'public');
+        $path = Storage::disk('public')->put($path."/".$name, $image->stream(), 'public');
 
         return response()->json(['success'=>$photo."/".$name]);
     }

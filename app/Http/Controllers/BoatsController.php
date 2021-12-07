@@ -74,7 +74,7 @@ class BoatsController extends Controller
                             $join->on('boats.owner_id', '=', 'users.id');
                         })->where('slug', $slug)->firstOrFail();
         $data['result_boat'] = Boat::where('slug', $slug)->first();
-        $data['boat_photos'] = Photo::where('photoable_id', $data['result_boat']->id)->where('photoable_type', 'Boat')->orderBy('serial', 'asc')->get();
+        $data['boat_photos'] = $data['result_boat']->photo;
         $data['discounts'] = Boat::leftJoin('discounts', function ($join) {
                                 $join->on('boats.id', '=', 'discounts.discountable_id');
                                 $join->where('discounts.discountable_type', 'App\Models\Boat');

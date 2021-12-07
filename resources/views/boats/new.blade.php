@@ -129,7 +129,7 @@ $(function(){
 					{  
 						url: "{{ url('/boat-photo-upload') }}",
 						sending: function(file, xhr, formData) {
-							formData.append("photoable_type", "Boat");  //name and value
+							formData.append("photoable_type", "App\Models\Boat");  //name and value
 							formData.append("photoable_id", boatsApp.getBoatId()); //name and value
 						},
 					});

@@ -69,7 +69,7 @@ function s3Url($photo, $photoable_id = false){
     }
     $str= rtrim($str, "/");
     
-    if($photoable_type == 'Boat'){
+    if($photoable_type == 'App\Models\Boat'){
         $str.='/images/boat/'.$photoable_id;
     }else{
         $str.='/images/property/'.$photoable_id;
@@ -85,7 +85,7 @@ function s3BoatUrl($photo, $photoable_id = false){
     $photoable_type = $cover_photo['photoable_type'];
 
     
-    if($photoable_type == 'Boat'){
+    if($photoable_type == 'App\Models\Boat'){
         $str.='/images/boat/'.$photoable_id;
     }else{
         $str.='/images/property/'.$photoable_id;
@@ -117,10 +117,21 @@ function s3PropertyUrl($photo, $s3_path, $photoable_id = false) {
     return $str;
 }
 
+function replaceBracket($name){
+    $name = str_replace('(', '_', $name);
+    $name = str_replace(')', '_', $name);
+    return $name;
+}
+
 function s3UrlAppend($url){
     $str = '';
     
-    $str.=rtrim(env('S3_BUCKET_PATH'), "/");
+    if(env('S3_BUCKET_PATH') == '') {
+        $str = '/storage/';
+    } else {
+        $str= env('S3_BUCKET_PATH');
+    }
+    $str= rtrim($str, "/");
     $str.="/".(ltrim($url,"/"));
 
     return $str;
@@ -141,7 +152,7 @@ function phpDefaultTimeZones()
         $zonesArray[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
     }
     return $zonesArray;
-    return $timezones;
+    // return $timezones;
 }
 
 

@@ -79,6 +79,7 @@ class SettingsController extends Controller
                         $tmp_name = $_FILES["photos"]["tmp_name"][$key];
 
                         $name = str_replace(' ', '_', $_FILES["photos"]["name"][$key]);
+                        $name = replaceBracket($name);
                         
                         $ext = pathinfo($name, PATHINFO_EXTENSION);
 

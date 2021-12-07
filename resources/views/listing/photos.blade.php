@@ -285,7 +285,7 @@
 			const url = '/listing/<?php echo $result->id;?>/photo-selectables';
 			$.ajax({
 				url: url,
-				data: {'property_id':<?php echo $result->id;?>, 'photoable_type': 'Property', '_token': '{{ csrf_token() }}'},
+				data: {'property_id':<?php echo $result->id;?>, 'photoable_type': 'App\Models\Properties', '_token': '{{ csrf_token() }}'},
 				type: 'get',
 				dataType: 'json',
 				success: function (result) {
@@ -302,7 +302,7 @@
       	var myDropzone = new Dropzone("form#DropzoneElement", {  
 			url: "{{ url('listing/'.$result->id.'/photo-upload') }}",
 			sending: function(file, xhr, formData) {
-				formData.append("photoable_type", "Property");  //name and value
+				formData.append("photoable_type", "App\Models\Properties");  //name and value
 				formData.append("property_id", propertyID); //name and value
 			},
 		});
@@ -446,7 +446,7 @@
 	$(document).on('change', '#photoId', function(ev){
 		var dataURL      = '{{url("listing/photo/make_default_photo")}}';
 		var option_value = $(this).val();
-		var photoable_type = 'Property';
+		var photoable_type = 'App\Models\Properties';
 		var photo_id     = $('option:selected', this).attr('image_id');
 		var property_id  = $('option:selected', this).attr('property_id'); 
 		page_loader_start();
