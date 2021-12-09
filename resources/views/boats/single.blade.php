@@ -26,7 +26,7 @@
 
 					<div class="ml-2">
 						<h3 class="text-20 mt-4"><strong>{{ $result->title }}</strong></h3>
-						<span class="text-14 gray-text"><i class="fas fa-map-marker-alt"></i> {{ $result->city }} </span>
+						<span class="text-14 gray-text"><i class="fas fa-map-marker-alt"></i> {{ $result->address->city ? $result->address->city : ''}} </span>
 						
 					</div>
 				</div>

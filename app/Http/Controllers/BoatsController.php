@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\{
+    Address,
     Boat,
     Properties,
     PropertyDetails,
@@ -74,6 +75,7 @@ class BoatsController extends Controller
                             $join->on('boats.owner_id', '=', 'users.id');
                         })->where('slug', $slug)->firstOrFail();
         $data['result_boat'] = Boat::where('slug', $slug)->first();
+        $data['result']['address'] = Address::where('addressable_id', $data['result_boat']['id'])->where('addressable_type', 'App\Models\Boat')->first();
         $data['boat_photos'] = $data['result_boat']->photo;
         $data['discounts'] = Boat::leftJoin('discounts', function ($join) {
                                 $join->on('boats.id', '=', 'discounts.discountable_id');
@@ -82,7 +84,6 @@ class BoatsController extends Controller
                        
         $data['boat_id'] = $data['result_boat']->id;
         $address = ($data['result']->address) ? $data['result']->address->city : '';
-       
         $map_where = 'https://maps.google.com/maps/api/geocode/json?key='.env('GOOGLE_MAP_API_KEY').'&address='.$address.'&sensor=false';
         $geocode  = $this->content_read($map_where);
         $json     = json_decode($geocode);

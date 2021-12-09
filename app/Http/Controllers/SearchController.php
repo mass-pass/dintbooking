@@ -414,8 +414,8 @@ class SearchController extends Controller
             $boatIds = array();
         }
         
-        $boats = Boat::whereHas('address', function($query) use ($location) {
-            $query->where('city', 'like', '%' . $location . '%');
+        $boats = Boat::whereHas('address', function($query) use ($city) {
+            $query->where('city', 'like', '%' . $city . '%');
         });
         if (!empty($boatIds)) {
             $boats = $boats->whereNotIn('id', $boatIds);
